@@ -97,6 +97,17 @@
     XCTAssertEqualObjects(result,expected);
 }
 
+- (void)testDecryption256WithDerivedKeyAndHighRotations {
+    NSString *value = @"2AcyTktd1uMXTdKC6z8Owj71NcPsRv4Fot7iBGWZqoPt4GZV2hbjLH48OkhAJwBwI7QRc7S7xhh+geid5WmO1uhIaH0kkXCL+NXgC4qEmtoTqS+hxwSbIyHKM2oRvKeoVGfgt2F2NQ1+kHEZTa8faKSu5AGvSm8MTiqR0GKEHr4SXrKVfMZ1R/dgkCrGARVAIi7PQrL/mS03PYmV1PeRHmBi5ynIMzXXONpENK9ezXs8qyPNmbmJo20B92YEhd5kZtOfjrChuFS81YeMF0R1ZhKZzoY67X12dn+bVapIW+qatMMkMrBlJsAUUvnGP9YtWJM2tQ7qXMAe7kiNZAvi8uADoA6g+EDKJplJPDdy9HPfwh4hFFVR1+JvxDw456OyiVO/jTxb3llYYlZ4pkSecmLZhP0GyweU83EXke94O1o=";
+    NSString *key = @"308df69930b737745efb3a89c01c5ac271a775fe74b258013251cc60013fca46";
+    NSString *pepper = @"pepper";
+    NSString *hmacKey = @"hmacKey";
+    NSString *encoding = @"base64";
+    NSString *result = FNNAME(decryptWithKey)(value,key,pepper,hmacKey,encoding,256);
+    NSString *expected = @"ABC";
+    XCTAssertEqualObjects(result,expected);
+}
+
 - (void)testPerformanceDecryption128 {
     [self measureBlock:^{
         for (size_t c=0;c<100;c++){
