@@ -1,4 +1,5 @@
-# Appcelerator Security Library for NodeJS [![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security) [![npm version](https://badge.fury.io/js/appc-security.svg)](http://badge.fury.io/js/appc-security)
+# Appcelerator Security Library for NodeJS 
+[![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security) [![npm version](https://badge.fury.io/js/appc-security.svg)](http://badge.fury.io/js/appc-security)
 
 This is a basic security library for encryption and decryption and other security related tasks that are common in NodeJS.
 
