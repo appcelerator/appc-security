@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2470DD751A75760100552643 /* appc_security_ios.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2470DD741A75760100552643 /* appc_security_ios.h */; };
+		2470DD771A75760100552643 /* appc_security_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DD761A75760100552643 /* appc_security_ios.m */; };
+		2470DD7D1A75760100552643 /* libappc-security-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2470DD711A75760100552643 /* libappc-security-ios.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2470DD7E1A75760100552643 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2470DD691A75760100552643 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2470DD701A75760100552643;
+			remoteInfo = "appc-security-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2470DD6F1A75760100552643 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				2470DD751A75760100552643 /* appc_security_ios.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2470DD711A75760100552643 /* libappc-security-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libappc-security-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2470DD741A75760100552643 /* appc_security_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = appc_security_ios.h; sourceTree = "<group>"; };
+		2470DD761A75760100552643 /* appc_security_ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = appc_security_ios.m; sourceTree = "<group>"; };
+		2470DD7C1A75760100552643 /* appc-security-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "appc-security-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2470DD821A75760100552643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2470DD6E1A75760100552643 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2470DD791A75760100552643 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2470DD7D1A75760100552643 /* libappc-security-ios.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2470DD681A75760100552643 = {
+			isa = PBXGroup;
+			children = (
+				2470DD731A75760100552643 /* appc-security-ios */,
+				2470DD801A75760100552643 /* appc-security-iosTests */,
+				2470DD721A75760100552643 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2470DD721A75760100552643 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2470DD711A75760100552643 /* libappc-security-ios.a */,
+				2470DD7C1A75760100552643 /* appc-security-iosTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2470DD731A75760100552643 /* appc-security-ios */ = {
+			isa = PBXGroup;
+			children = (
+				2470DD741A75760100552643 /* appc_security_ios.h */,
+				2470DD761A75760100552643 /* appc_security_ios.m */,
+			);
+			path = "appc-security-ios";
+			sourceTree = "<group>";
+		};
+		2470DD801A75760100552643 /* appc-security-iosTests */ = {
+			isa = PBXGroup;
+			children = (
+				2470DD811A75760100552643 /* Supporting Files */,
+			);
+			path = "appc-security-iosTests";
+			sourceTree = "<group>";
+		};
+		2470DD811A75760100552643 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2470DD821A75760100552643 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2470DD701A75760100552643 /* appc-security-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2470DD851A75760100552643 /* Build configuration list for PBXNativeTarget "appc-security-ios" */;
+			buildPhases = (
+				2470DD6D1A75760100552643 /* Sources */,
+				2470DD6E1A75760100552643 /* Frameworks */,
+				2470DD6F1A75760100552643 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "appc-security-ios";
+			productName = "appc-security-ios";
+			productReference = 2470DD711A75760100552643 /* libappc-security-ios.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		2470DD7B1A75760100552643 /* appc-security-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2470DD881A75760100552643 /* Build configuration list for PBXNativeTarget "appc-security-iosTests" */;
+			buildPhases = (
+				2470DD781A75760100552643 /* Sources */,
+				2470DD791A75760100552643 /* Frameworks */,
+				2470DD7A1A75760100552643 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2470DD7F1A75760100552643 /* PBXTargetDependency */,
+			);
+			name = "appc-security-iosTests";
+			productName = "appc-security-iosTests";
+			productReference = 2470DD7C1A75760100552643 /* appc-security-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2470DD691A75760100552643 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Jeff Haynie";
+				TargetAttributes = {
+					2470DD701A75760100552643 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					2470DD7B1A75760100552643 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = 2470DD6C1A75760100552643 /* Build configuration list for PBXProject "appc-security-ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2470DD681A75760100552643;
+			productRefGroup = 2470DD721A75760100552643 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2470DD701A75760100552643 /* appc-security-ios */,
+				2470DD7B1A75760100552643 /* appc-security-iosTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2470DD7A1A75760100552643 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2470DD6D1A75760100552643 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2470DD771A75760100552643 /* appc_security_ios.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2470DD781A75760100552643 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2470DD7F1A75760100552643 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2470DD701A75760100552643 /* appc-security-ios */;
+			targetProxy = 2470DD7E1A75760100552643 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2470DD831A75760100552643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2470DD841A75760100552643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2470DD861A75760100552643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2470DD871A75760100552643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2470DD891A75760100552643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "appc-security-iosTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2470DD8A1A75760100552643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "appc-security-iosTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2470DD6C1A75760100552643 /* Build configuration list for PBXProject "appc-security-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2470DD831A75760100552643 /* Debug */,
+				2470DD841A75760100552643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2470DD851A75760100552643 /* Build configuration list for PBXNativeTarget "appc-security-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2470DD861A75760100552643 /* Debug */,
+				2470DD871A75760100552643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		2470DD881A75760100552643 /* Build configuration list for PBXNativeTarget "appc-security-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2470DD891A75760100552643 /* Debug */,
+				2470DD8A1A75760100552643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2470DD691A75760100552643 /* Project object */;
+}
