@@ -3,5 +3,5 @@ sudo: false
 before_script:
 - npm install -g grunt-cli
 script:
-- ./ios/build.sh
-- cd nodes; grunt
+- cd ios; ./ios/build.sh; cd ..
+- cd nodejs; grunt; cd ..
