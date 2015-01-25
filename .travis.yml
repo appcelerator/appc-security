@@ -1,7 +1,7 @@
 language: objective-c
 sudo: false
 before_script:
-- npm install -g grunt-cli
+- cd nodejs ; npm install -g grunt-cli; npm install; cd ..
 script:
 - cd ios; ./ios/build.sh; cd ..
 - cd nodejs; grunt; cd ..
