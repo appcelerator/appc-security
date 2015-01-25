@@ -1,6 +1,6 @@
 language: objective-c
 sudo: false
 before_script:
-- apt-get install -y nodejs
+- brew install node
 - npm install -g grunt-cli
 script:
