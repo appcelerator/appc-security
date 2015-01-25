@@ -8,10 +8,7 @@
  */
 var crypto = require('crypto');
 
-
-// most security researchers seem to indicate we need to double pbkdf2 iterations every year
-// so this will simply do that programatically here
-var ITERATIONS = (1 + (new Date().getFullYear() - 2015)) * 100000;
+var ITERATIONS = 100000;
 var SALT_LENGTH = 512;
 var IV_LENGTH = 32;
 var HMAC_LENGTH = 64;
@@ -75,6 +72,17 @@ function generateLargeRandomValue(size, encoding) {
 }
 
 /**
+ * check the size of the encoding used 128, 192, 256
+ */
+function checkSize(size) {
+	size = size || 256;
+	if (size < 128 || size > 256) {
+		throw new SecurityError('invalid algorithm size: '+size);
+	}
+	return size;
+}
+
+/**
  * encrypt a plainText Buffer
  *
  * @param {String} plainText buffer to encrypt
@@ -82,12 +90,16 @@ function generateLargeRandomValue(size, encoding) {
  * @param {String} shared pepper which is used to hash the salt
  * @param {String} shared hmac_key for verifying the hmac of the encrypted blob
  * @param {String} encoding of the returned encrypted buffer (defaults to hex)
+ * @param {Number} size of the algorithm to used (128, 192, 256)
  * @returns {String} encrypted blob in hex format
  */
-function encrypt (plainText, key, pepper, hmac_key, encoding) {
+function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
+	// validate the size
+	size = checkSize(size);
 	try {
+		var keySizeFactor = 256 / size,
 			// create random IV
-		var iv = new Buffer(generateLargeRandomValue(IV_LENGTH/2),'hex'),
+			iv = new Buffer(generateLargeRandomValue(IV_LENGTH/2),'hex'),
 			// create an HMAC
 			hmac = crypto.createHmac('SHA256', hmac_key),
 			// create a random salt
@@ -95,9 +107,9 @@ function encrypt (plainText, key, pepper, hmac_key, encoding) {
 			// create a salt + pepper hash which hashes our salt with a known pepper
 			saltAndPepper = sha1(salt+pepper),
 			// use the password to create a derived key used for encrypting
-			derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH),
+			derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH / keySizeFactor),
 			// create our cipher
-			cipher = crypto.createCipheriv('AES-256-CBC', derivedKey, iv);
+			cipher = crypto.createCipheriv('AES-'+size+'-CBC', derivedKey, iv);
 
 		// encrypt the plainText
 		cipher.setEncoding('hex');
@@ -116,6 +128,9 @@ function encrypt (plainText, key, pepper, hmac_key, encoding) {
 		/* istanbul ignore if */
 		if (DEBUG) {
 			console.log('------- BEGIN ENCRYPTION ------\n');
+			console.log('size=',size+'\n');
+			console.log('keySizeFactor=',keySizeFactor+'\n');
+			console.log('hmacKey=',hmacKey+'\n');
 			console.log('hmacEncoding=',hmacEncoding.length,hmacEncoding+'\n');
 			console.log('salt=',salt.length,salt+'\n');
 			console.log('pepper=',pepper+'\n');
@@ -148,9 +163,12 @@ function encrypt (plainText, key, pepper, hmac_key, encoding) {
  * @param {String} shared pepper which is used to hash the salt
  * @param {String} shared hmac_key for verifying the hmac of the encrypted blob
  * @param {String} encoding of the encrypted buffer (defaults to hex)
+ * @param {Number} size of the algorithm used (128, 192, 256)
  * @returns {String} decrypted blob
  */
-function decrypt (encrypted, key, pepper, hmac_key, encoding) {
+function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
+	// validate the size
+	size = checkSize(size);
 	// if this is encoded, we first need to decode it back to hex
 	if (encoding && encoding!=='hex') {
 		encrypted = new Buffer(encrypted,encoding);
@@ -160,24 +178,13 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding) {
 		throw new SecurityError("invalid encrypted data");
 	}
 	try {
-		var hmacValue = encrypted.substring(0, HMAC_LENGTH),
+		var keySizeFactor = 256 / size,
+			hmacValue = encrypted.substring(0, HMAC_LENGTH),
 			salt = encrypted.substring(HMAC_LENGTH, HMAC_LENGTH + SALT_LENGTH),
 			iv = encrypted.substring(SALT_LENGTH + HMAC_LENGTH, SALT_LENGTH + HMAC_LENGTH + IV_LENGTH),
 			encrypted = encrypted.substring(SALT_LENGTH + HMAC_LENGTH + IV_LENGTH),
 			hmac = crypto.createHmac('SHA256', hmac_key),
 			saltAndPepper = sha1(salt+pepper);
-
-		/* istanbul ignore if */
-		if (DEBUG) {
-			console.log('------- BEGIN DECRYPTION ------\n');
-			console.log('hmac=',hmacValue+'\n');
-			console.log('salt=',salt+'\n');
-			console.log('pepper=',pepper+'\n');
-			console.log('iv=',iv.length,iv+'\n');
-			console.log('encrypted=',encrypted+'\n');
-			console.log('saltAndPepper=',saltAndPepper+'\n');
-			console.log('------- END DECRYPTION ------\n');
-		}
 
 		// we first need to re-create our HMAC and make sure that the encrypted blob is the 
 		// same as the encryption routine created and that it hasn't been tampered with
@@ -185,6 +192,21 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding) {
 		hmac.update(saltAndPepper);
 		hmac.update(iv);
 		hmac = hmac.digest('hex');
+
+		/* istanbul ignore if */
+		if (DEBUG) {
+			console.log('------- BEGIN DECRYPTION ------\n');
+			console.log('size=',size+'\n');
+			console.log('keySizeFactor=',keySizeFactor+'\n');
+			console.log('hmacKey=',hmacKey+'\n');
+			console.log('hmac=',hmacValue+'\n');
+			console.log('salt=',salt+'\n');
+			console.log('pepper=',pepper+'\n');
+			console.log('iv=',iv.length,iv+'\n');
+			console.log('encrypted=',encrypted+'\n');
+			console.log('saltAndPepper=',saltAndPepper+'\n');
+			console.log('hmac result=',hmac+'\n');
+		}
 
 		// test for constant time comparision which both checks the values and ensures that 
 		// we don't have a timing attack. this validates that the encrypted value hasn't been
@@ -194,10 +216,16 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding) {
 		}
 
 		// create our derived key
-		var derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH),
+		var derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH/keySizeFactor),
 			ivKey = new Buffer(iv,'hex'),
 			// create our decryption cipher
-			cipher = crypto.createDecipheriv('AES-256-CBC', derivedKey, ivKey);
+			cipher = crypto.createDecipheriv('AES-'+size+'-CBC', derivedKey, ivKey);
+
+		/* istanbul ignore if */
+		if (DEBUG) {
+			console.log('derived key=',derivedKey.toString('hex')+'\n');
+			console.log('------- END DECRYPTION ------\n');
+		}
 
 		cipher.update(encrypted,'hex','utf8');
 		return cipher.final('utf8');
@@ -228,16 +256,18 @@ exports.DEBUG = DEBUG;
 // for testing
 /* istanbul ignore if */
 if (module.id === ".") {
-	var key = generateLargeRandomValue(),
-		pepper = generateLargeRandomValue(),
-		hmacKey = generateLargeRandomValue();
+	var key = 'key',
+		pepper = 'pepper',
+		hmacKey = 'hmacKey';
 
-	var result = encrypt('ABC',key,pepper,hmacKey,'base64');
-	console.log(result, result.length+'\n');
-	// console.log(new Buffer(result,'hex').toString('base64'), new Buffer(result,'hex').toString('base64').length);
-	var result2 = decrypt(result,key,pepper,hmacKey,'base64');
+	DEBUG = true;
+	ITERATIONS = 100;
+	var keysize = 256;
+	var result = encrypt('ABC',key,pepper,hmacKey,'base64',keysize);
+	var result2 = decrypt(result,key,pepper,hmacKey,'base64',keysize);
 	console.log('static NSString *ENC = @"'+result+'";\n');
 	console.log('static NSString *KEY = @"'+key+'";\n');
 	console.log('static NSString *PEPPER = @"'+pepper+'";\n');
 	console.log('static NSString *HMACKEY = @"'+hmacKey+'";\n');
+	console.log('OK ?',result2==='ABC');
 }

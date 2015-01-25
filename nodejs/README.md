@@ -12,8 +12,8 @@ The following APIs are available:
 
 - `sha1(value,encoding)` - simple SHA1 digest. defaults to hex encoding if not specified
 - `generateLargeRandomValue(size,encoding)` - generate random bytes. defaults to hex encoding if not specified. size by default is 512
-- `encrypt(plainText, key, pepper, hmac_key, encoding)` - using AES256 encryption, encrypt plain text. pass in a shared key, shared pepper (to mix with generated salt), and shared hmac key used for integrity validation. default encoding is hex if not specified.
-- `decrypt(encrypted, key, pepper, hmac_key, encoding)` - using AES256 decryption, decrypt encrypted buffer. pass in a shared key, shared pepper (to mix with generated salt), and shared hmac key used for integrity validation. default encoding is hex if not specified.`
+- `encrypt(plainText, key, pepper, hmac_key, encoding, size)` - using AES encryption, encrypt plain text. pass in a shared key, shared pepper (to mix with generated salt), and shared hmac key used for integrity validation. default encoding is hex if not specified. default size is 512. use 128 or 192 for alternative sizes.
+- `decrypt(encrypted, key, pepper, hmac_key, encoding, size)` - using AES decryption, decrypt encrypted buffer. pass in a shared key, shared pepper (to mix with generated salt), and shared hmac key used for integrity validation. default encoding is hex if not specified.` default size is 512. use 128 or 192 for alternative sizes.
 
 The following properties can be changed. Care should be taken care of to only modify these if you absolutely know what you're doing. In general, these should not be changed.
 
@@ -24,7 +24,7 @@ The following properties can be changed. Care should be taken care of to only mo
 - `KEY_LENGTH` - length of the derived key (defaults to 32)
 - `DEBUG` - turn on debug logging. this is helpful for testing issues. however, care should be taken not to enable this in production since encryption data is logged.  (defaults to false)
 
-For `ITERATIONS`, we currently use `100000` rounds (in the year 2015), but this library by default will automatically double every this number every year thereafter.  The larger the number, the more time it takes to generate the encryption key, however, the more secure it is.
+For `ITERATIONS`, we currently use `100000` rounds (in the year 2015). NOTE: the decryption needs to match the same number of iterations specified here for decryption to work.
 
 ### Example Encryption
 

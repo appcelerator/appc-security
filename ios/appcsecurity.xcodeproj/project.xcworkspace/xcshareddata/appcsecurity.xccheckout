@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5B799619-19ED-42FB-9916-D5024EF6209B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>appcsecurity</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D6E6366D912CA0CACEAE422EC86C5AA4AA54E9B5</key>
+		<string>github.com:appcelerator/appc-security.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios/appcsecurity.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D6E6366D912CA0CACEAE422EC86C5AA4AA54E9B5</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:appcelerator/appc-security.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D6E6366D912CA0CACEAE422EC86C5AA4AA54E9B5</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D6E6366D912CA0CACEAE422EC86C5AA4AA54E9B5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>appc-security</string>
+		</dict>
+	</array>
+</dict>
+</plist>

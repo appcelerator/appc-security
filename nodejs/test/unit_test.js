@@ -42,6 +42,71 @@ describe('library', function(){
 		should(result2).equal('ABC');
 	});
 
+	it('should encrypt', function(){
+		lib.DEBUG = true;
+		var key = 'key',
+			pepper = 'pepper',
+			hmacKey = 'hmacKey',
+			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64');
+		should(result).be.string;
+		should(result).match(/=$/);
+
+		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64');
+		should(result2).be.string;
+		should(result2).equal('ABC');
+	});
+
+	it('should encrypt using AES128', function(){
+		var key = lib.generateLargeRandomValue(),
+			pepper = lib.generateLargeRandomValue(),
+			hmacKey = lib.generateLargeRandomValue(),
+			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',128);
+		should(result).be.string;
+		should(result).match(/=$/);
+
+		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',128);
+		should(result2).be.string;
+		should(result2).equal('ABC');
+	});
+
+	it('should encrypt using AES192', function(){
+		var key = lib.generateLargeRandomValue(),
+			pepper = lib.generateLargeRandomValue(),
+			hmacKey = lib.generateLargeRandomValue(),
+			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',192);
+		should(result).be.string;
+		should(result).match(/=$/);
+
+		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',192);
+		should(result2).be.string;
+		should(result2).equal('ABC');
+	});
+
+	it('should encrypt using AES256', function(){
+		var key = lib.generateLargeRandomValue(),
+			pepper = lib.generateLargeRandomValue(),
+			hmacKey = lib.generateLargeRandomValue(),
+			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',256);
+		should(result).be.string;
+		should(result).match(/=$/);
+
+		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',256);
+		should(result2).be.string;
+		should(result2).equal('ABC');
+	});
+
+	it('should fail to encrypt using invalid size', function(){
+		var key = lib.generateLargeRandomValue(),
+			pepper = lib.generateLargeRandomValue(),
+			hmacKey = lib.generateLargeRandomValue();
+		(function(){
+			lib.encrypt('ABC',key,pepper,hmacKey,null,64);
+		}).should.throw('invalid algorithm size: 64');
+		(function(){
+			lib.encrypt('ABC',key,pepper,hmacKey,null,674);
+		}).should.throw('invalid algorithm size: 674');
+	});
+
 	it('should not fail to encrypt with short key', function(){
 		var key = '123',
 			pepper = lib.generateLargeRandomValue(),

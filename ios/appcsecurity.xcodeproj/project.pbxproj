@@ -10,6 +10,7 @@
 		2470DD981A75764E00552643 /* appcsecurity.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2470DD971A75764E00552643 /* appcsecurity.h */; };
 		2470DD9A1A75764E00552643 /* appcsecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DD991A75764E00552643 /* appcsecurity.m */; };
 		2470DDA01A75764E00552643 /* libappcsecurity.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2470DD941A75764D00552643 /* libappcsecurity.a */; };
+		2470DDAF1A757AA600552643 /* EncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DDAE1A757AA600552643 /* EncryptionTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		2470DD991A75764E00552643 /* appcsecurity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = appcsecurity.m; sourceTree = "<group>"; };
 		2470DD9F1A75764E00552643 /* appcsecurityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = appcsecurityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2470DDA51A75764E00552643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2470DDAE1A757AA600552643 /* EncryptionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +67,8 @@
 		2470DD8B1A75764D00552643 = {
 			isa = PBXGroup;
 			children = (
-				2470DD961A75764D00552643 /* appcsecurity */,
-				2470DDA31A75764E00552643 /* appcsecurityTests */,
+				2470DD961A75764D00552643 /* source */,
+				2470DDA31A75764E00552643 /* tests */,
 				2470DD951A75764D00552643 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,20 +82,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2470DD961A75764D00552643 /* appcsecurity */ = {
+		2470DD961A75764D00552643 /* source */ = {
 			isa = PBXGroup;
 			children = (
 				2470DD971A75764E00552643 /* appcsecurity.h */,
 				2470DD991A75764E00552643 /* appcsecurity.m */,
 			);
+			name = source;
 			path = appcsecurity;
 			sourceTree = "<group>";
 		};
-		2470DDA31A75764E00552643 /* appcsecurityTests */ = {
+		2470DDA31A75764E00552643 /* tests */ = {
 			isa = PBXGroup;
 			children = (
 				2470DDA41A75764E00552643 /* Supporting Files */,
+				2470DDAE1A757AA600552643 /* EncryptionTest.m */,
 			);
+			name = tests;
 			path = appcsecurityTests;
 			sourceTree = "<group>";
 		};
@@ -201,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2470DDAF1A757AA600552643 /* EncryptionTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +362,7 @@
 				2470DDAA1A75764E00552643 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2470DDAB1A75764E00552643 /* Build configuration list for PBXNativeTarget "appcsecurityTests" */ = {
 			isa = XCConfigurationList;
@@ -364,6 +371,7 @@
 				2470DDAD1A75764E00552643 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
