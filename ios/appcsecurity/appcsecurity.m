@@ -23,8 +23,8 @@
  */
 static NSString* hexToString(unsigned char* data, size_t length) {
 	NSMutableString* hash = [NSMutableString stringWithCapacity:length * 2];
-	for (unsigned int i = 0; i < length; i++) {
-		[hash appendFormat:@"%02x", data[i]];
+	for (size_t c = 0; c < length; c++) {
+		[hash appendFormat:@"%02x", data[c]];
 	}
 	return [hash lowercaseString];
 }
@@ -36,8 +36,8 @@ static NSString* hexDataToString(NSData *_data) {
 	NSUInteger length = [_data length];
 	unsigned char *data = (unsigned char*)[_data bytes];
 	NSMutableString* hash = [NSMutableString stringWithCapacity:length * 2];
-	for (unsigned int i = 0; i < length; i++) {
-		[hash appendFormat:@"%02x", data[i]];
+	for (size_t c = 0; c < length; c++) {
+		[hash appendFormat:@"%02x", data[c]];
 	}
 	return [hash lowercaseString];
 }
@@ -67,19 +67,16 @@ static BOOL constantTimeCompare(NSString *a, NSString *b) {
 /**
  * convert a hex NSString* to NSData*
  */
-static NSData * dataFromHexString(NSString *originalHexString)
-{
+static NSData * dataFromHexString(NSString *originalHexString) {
 	NSString *hexString = [originalHexString stringByReplacingOccurrencesOfString:@"[ <>]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [originalHexString length])]; // strip out spaces (between every four bytes), "<" (at the start) and ">" (at the end)
 	NSMutableData *data = [NSMutableData dataWithCapacity:[hexString length] / 2];
-	for (NSInteger i = 0; i < [hexString length]; i += 2)
-	{
-		NSString *hexChar = [hexString substringWithRange: NSMakeRange(i, 2)];
+	for (NSInteger c = 0; c < [hexString length]; c += 2) {
+		NSString *hexChar = [hexString substringWithRange: NSMakeRange(c, 2)];
 		int value;
 		sscanf([hexChar cStringUsingEncoding:NSASCIIStringEncoding], "%x", &value);
 		uint8_t byte = value;
 		[data appendBytes:&byte length:1];
 	}
-
 	return data;
 }
 
@@ -121,16 +118,16 @@ static NSData* aesDecrypt (NSString* keyHex, NSString *ivHex, NSString *encHex, 
 
 	size_t numBytesDecrypted = 0;
 	CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,
-										  kCCAlgorithmAES128,
-										  kCCOptionPKCS7Padding,
-										  key.bytes,
-										  floor((float)(kCCKeySizeAES256 / keyFactor)),
-										  iv.bytes,
-										  enc.bytes,
-										  enc.length,
-										  buffer,
-										  bufferSize,
-										  &numBytesDecrypted );
+										kCCAlgorithmAES128,
+										kCCOptionPKCS7Padding,
+										key.bytes,
+										floor((float)(kCCKeySizeAES256 / keyFactor)),
+										iv.bytes,
+										enc.bytes,
+										enc.length,
+										buffer,
+										bufferSize,
+										&numBytesDecrypted );
 
 	if (cryptStatus == kCCSuccess) {
 		// The returned NSData takes ownership of the buffer and will free it on deallocation
@@ -144,8 +141,7 @@ static NSData* aesDecrypt (NSString* keyHex, NSString *ivHex, NSString *encHex, 
 /**
  * HMAC-256 data using key
  */
-NSString* FNNAME(hmac256)(NSString *key, NSString *data)
-{
+NSString* FNNAME(hmac256)(NSString *key, NSString *data) {
 	const char *cKey  = [key cStringUsingEncoding:NSASCIIStringEncoding];
 	const char *cData = [data cStringUsingEncoding:NSASCIIStringEncoding];
 	unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
@@ -165,9 +161,8 @@ NSString * FNNAME(sha1)(NSString *str) {
 
 	NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
 
-	for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
-	{
-		[output appendFormat:@"%02x", digest[i]];
+	for (size_t c = 0; c < CC_SHA1_DIGEST_LENGTH; c++) {
+		[output appendFormat:@"%02x", digest[c]];
 	}
 
 	return [output lowercaseString];
