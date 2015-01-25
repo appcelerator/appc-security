@@ -1,6 +1,7 @@
 language: objective-c
 sudo: false
 before_script:
-- brew install node
 - npm install -g grunt-cli
 script:
+- ./ios/build.sh
+- cd nodes; grunt
