@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 CONFIG="Release"
 LIB="appcsecurity"
 FINALNAME="appcsecurity"
+XCTOOL=`which xctool`
 DEFINES=
 
 if (( $# > 0 )); then
@@ -11,6 +12,21 @@ fi
 
 if [ "$CONFIG" = "Debug" ]; then
 	DEFINES="GCC_PREPROCESSOR_DEFINITIONS=DEBUG=1"
+fi
+
+if [ -d build ]; then
+	rm -rf build
+fi
+
+if [ ! -f $XCTOOL ]; then
+	echo "Install XCTool for Automated Unit Testing"
+	echo "See https://github.com/facebook/xctool for instructions"
+else
+	xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB}Tests ${DEFINES} SYMROOT=./build
+	xctool -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} run-tests -reporter pretty SYMROOT=./build
+	if [ $? -ne 0 ]; then
+		exit $?
+	fi
 fi
 
 if [ -d build ]; then
@@ -35,3 +51,7 @@ done
 
 xcrun -sdk iphoneos lipo -info build/lib${LIB}.a
 mv build/lib${LIB}.a build/lib${FINALNAME}.a
+
+echo -e "\033[32mBuilt static library located at \033[0m\033[33mbuild/lib${FINALNAME}.a\033[0m"
+exit 0
+
