@@ -1,6 +1,6 @@
-language: node_js
-node_js:
-- '0.11'
-- '0.10'
+language: objective-c
+sudo: false
 before_script:
+- apt-get install -y nodejs
 - npm install -g grunt-cli
+script:
