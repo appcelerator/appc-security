@@ -91,7 +91,7 @@ function checkSize(size) {
  * @param {String} shared hmac_key for verifying the hmac of the encrypted blob
  * @param {String} encoding of the returned encrypted buffer (defaults to hex)
  * @param {Number} size of the algorithm to used (128, 192, 256)
- * @returns {String} encrypted blob in hex format
+ * @returns {Object} object hash of encryption results. value property is the encryptedText
  */
 function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
 	// validate the size
@@ -146,9 +146,15 @@ function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
 		var encryptedText = hmacEncoding + salt + iv.toString('hex') + encrypted;
 		if (encoding && encoding!=='hex') {
 			// if we need to return a different encoding than hex, encode it
-			return new Buffer(encryptedText,'hex').toString(encoding);
+			encryptedText = new Buffer(encryptedText,'hex').toString(encoding);
 		}
-		return encryptedText;
+		return {
+			value: encryptedText,
+			derivedKey: derivedKey,
+			saltAndPepper: saltAndPepper,
+			salt: salt,
+			iv: iv
+		};
 	}
 	catch (E) {
 		throw new SecurityError('encryption failed');

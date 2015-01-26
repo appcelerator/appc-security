@@ -17,7 +17,7 @@
 // so if the function below is hmac256 the exported symbol when using this library
 // is AppC_hmac256 (or whatever you set this to below)
 //
-#define FNNAME(y) AppC_ ## y
+#define APPCSECFN(y) AppC_ ## y
 
 /**
  * produce an HMAC-256 for data using key
@@ -26,7 +26,7 @@
  * @param {NSString} data to HMAC
  * @returns {NSString} HMAC value
  */
-NSString* FNNAME(hmac256)(NSString *key, NSString *data);
+NSString* APPCSECFN(hmac256)(NSString *key, NSString *data);
 
 /**
  * produce a SHA1 from a data
@@ -34,7 +34,7 @@ NSString* FNNAME(hmac256)(NSString *key, NSString *data);
  * @param {NSString} data to hash
  * @returns {NSString} hashed value of data
  */
-NSString* FNNAME(sha1)(NSString *data);
+NSString* APPCSECFN(sha1)(NSString *data);
 
 /**
  * decrypt an encrypted value using key, pepper and hmacKey and return resulting plainText
@@ -47,7 +47,7 @@ NSString* FNNAME(sha1)(NSString *data);
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-NSString* FNNAME(decrypt)(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
+NSString* APPCSECFN(decrypt)(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
 
 /**
  * decrypt an encrypted value using computed derived key, pepper and hmacKey and return resulting plainText
@@ -60,5 +60,5 @@ NSString* FNNAME(decrypt)(NSString *value, NSString *key, NSString *pepper, NSSt
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-NSString* FNNAME(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
+NSString* APPCSECFN(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
 

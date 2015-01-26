@@ -34,10 +34,14 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64');
-		should(result).be.string;
-		should(result).match(/=$/);
+		should(result).be.object;
+		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64');
+		should(result).have.property('saltAndPepper');
+		should(result).have.property('iv');
+		should(result).have.property('derivedKey');
+
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey,'base64');
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -48,10 +52,10 @@ describe('library', function(){
 			pepper = 'pepper',
 			hmacKey = 'hmacKey',
 			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64');
-		should(result).be.string;
-		should(result).match(/=$/);
+		should(result).be.object;
+		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64');
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey,'base64');
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -61,10 +65,10 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',128);
-		should(result).be.string;
-		should(result).match(/=$/);
+		should(result).be.object;
+		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',128);
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey,'base64',128);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -74,10 +78,10 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',192);
-		should(result).be.string;
-		should(result).match(/=$/);
+		should(result).be.object;
+		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',192);
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey,'base64',192);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -87,10 +91,10 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey,'base64',256);
-		should(result).be.string;
-		should(result).match(/=$/);
+		should(result).be.object;
+		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey,'base64',256);
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey,'base64',256);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -139,10 +143,10 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
-		should(result).not.match(/=$/);
+		should(result).be.object;
+		should(result.value).not.match(/=$/);
 
-		var result2 = lib.decrypt(result,key,pepper,hmacKey);
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
@@ -161,7 +165,7 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
+		should(result).be.object;
 		(function(){
 			lib.decrypt('123',key,pepper,hmacKey);
 		}).should.throw('invalid encrypted data');
@@ -172,9 +176,9 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
+		should(result).be.object;
 		(function(){
-			lib.decrypt(result,'123',pepper,hmacKey);
+			lib.decrypt(result.value,'123',pepper,hmacKey);
 		}).should.throw('decryption failed');
 	});
 
@@ -183,9 +187,9 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
+		should(result).be.object;
 		(function(){
-			lib.decrypt(result,key,'123',hmacKey);
+			lib.decrypt(result.value,key,'123',hmacKey);
 		}).should.throw('encrypted data has been tampered with');
 	});
 
@@ -194,9 +198,9 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
+		should(result).be.object;
 		(function(){
-			lib.decrypt(result,key,pepper,'123');
+			lib.decrypt(result.value,key,pepper,'123');
 		}).should.throw('encrypted data has been tampered with');
 	});
 
@@ -205,9 +209,9 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
+		should(result).be.object;
 		(function(){
-			lib.decrypt(result+'1',key,pepper,hmacKey);
+			lib.decrypt(result.value+'1',key,pepper,hmacKey);
 		}).should.throw('encrypted data has been tampered with');
 	});
 
@@ -216,9 +220,9 @@ describe('library', function(){
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC',key,pepper,hmacKey);
-		should(result).be.string;
-		var hmac = result.substring(0, lib.HMAC_LENGTH),
-			remainder = result.substring(lib.HMAC_LENGTH);
+		should(result).be.object;
+		var hmac = result.value.substring(0, lib.HMAC_LENGTH),
+			remainder = result.value.substring(lib.HMAC_LENGTH);
 		(function(){
 			result = hmac.substring(0,hmac.length-2) + remainder;
 			lib.decrypt(result,key,pepper,hmacKey);

@@ -20,13 +20,13 @@
 
 
 - (void)testSHA1 {
-	NSString *result = FNNAME(sha1)(@"abc");
+	NSString *result = APPCSECFN(sha1)(@"abc");
 	NSString *expected = @"a9993e364706816aba3e25717850c26c9cd0d89d";
 	XCTAssertEqualObjects(result, expected);
 }
 
 - (void)testHMAC256 {
-	NSString *result = FNNAME(hmac256)(@"key",@"value");
+	NSString *result = APPCSECFN(hmac256)(@"key",@"value");
 	NSString *expected = @"90fbfcf15e74a36b89dbdb2a721d9aecffdfdddc5c83e27f7592594f71932481";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -37,7 +37,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decrypt)(value,key,pepper,hmacKey,encoding,128);
+	NSString *result = APPCSECFN(decrypt)(value,key,pepper,hmacKey,encoding,128);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -48,7 +48,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decryptWithKey)(value,key,pepper,hmacKey,encoding,128);
+	NSString *result = APPCSECFN(decryptWithKey)(value,key,pepper,hmacKey,encoding,128);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -59,7 +59,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decrypt)(value,key,pepper,hmacKey,encoding,192);
+	NSString *result = APPCSECFN(decrypt)(value,key,pepper,hmacKey,encoding,192);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -70,7 +70,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decryptWithKey)(value,key,pepper,hmacKey,encoding,192);
+	NSString *result = APPCSECFN(decryptWithKey)(value,key,pepper,hmacKey,encoding,192);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -81,7 +81,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decrypt)(value,key,pepper,hmacKey,encoding,256);
+	NSString *result = APPCSECFN(decrypt)(value,key,pepper,hmacKey,encoding,256);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -92,7 +92,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decryptWithKey)(value,key,pepper,hmacKey,encoding,256);
+	NSString *result = APPCSECFN(decryptWithKey)(value,key,pepper,hmacKey,encoding,256);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
@@ -103,7 +103,7 @@
 	NSString *pepper = @"pepper";
 	NSString *hmacKey = @"hmacKey";
 	NSString *encoding = @"base64";
-	NSString *result = FNNAME(decryptWithKey)(value,key,pepper,hmacKey,encoding,256);
+	NSString *result = APPCSECFN(decryptWithKey)(value,key,pepper,hmacKey,encoding,256);
 	NSString *expected = @"ABC";
 	XCTAssertEqualObjects(result,expected);
 }
