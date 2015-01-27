@@ -66,5 +66,5 @@ To increase security, you should store these values in different locations and g
 
 ## License
 
-While this source code is made available on Github and is public, this code is closed source and Confidential and Proprietary to Appcelerator, Inc. All Rights Reserved.  This code MUST not be modified, copy or otherwise redistributed without expression written permission of Appcelerator. This file is licensed as part of the Appcelerator Platform and governed under the terms of the Appcelerator license agreement.
+While this source code is made available on GitHub and is public, this code is closed source and Confidential and Proprietary to Appcelerator, Inc. All Rights Reserved.  This code MUST not be modified, copied or otherwise redistributed without express written permission of Appcelerator. This file is licensed as part of the Appcelerator Platform and governed under the terms of the Appcelerator license agreement.
 
