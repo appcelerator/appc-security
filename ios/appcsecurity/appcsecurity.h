@@ -11,13 +11,19 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCrypto.h>
 
-// this is the prefix for all the public APIs defined in this library
-// to prevent symbol conflicts with other libraries or user defined symbols
-//
-// so if the function below is hmac256 the exported symbol when using this library
-// is AppC_hmac256 (or whatever you set this to below)
-//
-#define APPCSECFN(y) AppC_ ## y
+// the build script will generate these each time you build
+#ifdef APPC_OBFUSCATE_SYMBOLS
+#define hmac256 		APPC_SYMBOL_HMAC256
+#define sha1 			APPC_SYMBOL_SHA1
+#define decrypt 		APPC_SYMBOL_DECRYPT
+#define decryptWithKey 	APPC_SYMBOL_DECRYPTWITHKEY
+#endif
+
+#ifdef __cplusplus
+#define EXTERN extern "C"
+#else
+#define EXTERN
+#endif
 
 /**
  * produce an HMAC-256 for data using key
@@ -26,7 +32,7 @@
  * @param {NSString} data to HMAC
  * @returns {NSString} HMAC value
  */
-NSString* APPCSECFN(hmac256)(NSString *key, NSString *data);
+EXTERN NSString* hmac256(NSString *key, NSString *data);
 
 /**
  * produce a SHA1 from a data
@@ -34,7 +40,7 @@ NSString* APPCSECFN(hmac256)(NSString *key, NSString *data);
  * @param {NSString} data to hash
  * @returns {NSString} hashed value of data
  */
-NSString* APPCSECFN(sha1)(NSString *data);
+EXTERN NSString* sha1(NSString *data);
 
 /**
  * decrypt an encrypted value using key, pepper and hmacKey and return resulting plainText
@@ -47,7 +53,7 @@ NSString* APPCSECFN(sha1)(NSString *data);
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-NSString* APPCSECFN(decrypt)(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
+EXTERN NSString* decrypt(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
 
 /**
  * decrypt an encrypted value using computed derived key, pepper and hmacKey and return resulting plainText
@@ -60,5 +66,5 @@ NSString* APPCSECFN(decrypt)(NSString *value, NSString *key, NSString *pepper, N
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-NSString* APPCSECFN(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
+EXTERN NSString* decryptWithKey(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
 

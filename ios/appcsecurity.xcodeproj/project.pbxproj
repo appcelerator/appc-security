@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		241076D81A776A7500469AAF /* appcsecurity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 241076D71A776A7500469AAF /* appcsecurity.mm */; };
+		241076D91A776A7500469AAF /* appcsecurity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 241076D71A776A7500469AAF /* appcsecurity.mm */; };
 		2470DD981A75764E00552643 /* appcsecurity.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2470DD971A75764E00552643 /* appcsecurity.h */; };
-		2470DD9A1A75764E00552643 /* appcsecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DD991A75764E00552643 /* appcsecurity.m */; };
 		2470DDA01A75764E00552643 /* libappcsecurity.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2470DD941A75764D00552643 /* libappcsecurity.a */; };
 		2470DDAF1A757AA600552643 /* EncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DDAE1A757AA600552643 /* EncryptionTest.m */; };
 /* End PBXBuildFile section */
@@ -37,9 +38,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		241076D71A776A7500469AAF /* appcsecurity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = appcsecurity.mm; sourceTree = "<group>"; };
 		2470DD941A75764D00552643 /* libappcsecurity.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libappcsecurity.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2470DD971A75764E00552643 /* appcsecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = appcsecurity.h; sourceTree = "<group>"; };
-		2470DD991A75764E00552643 /* appcsecurity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = appcsecurity.m; sourceTree = "<group>"; };
 		2470DD9F1A75764E00552643 /* appcsecurityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = appcsecurityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2470DDA51A75764E00552643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2470DDAE1A757AA600552643 /* EncryptionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionTest.m; sourceTree = "<group>"; };
@@ -85,8 +86,8 @@
 		2470DD961A75764D00552643 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				241076D71A776A7500469AAF /* appcsecurity.mm */,
 				2470DD971A75764E00552643 /* appcsecurity.h */,
-				2470DD991A75764E00552643 /* appcsecurity.m */,
 			);
 			name = source;
 			path = appcsecurity;
@@ -198,7 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2470DD9A1A75764E00552643 /* appcsecurity.m in Sources */,
+				241076D81A776A7500469AAF /* appcsecurity.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2470DDAF1A757AA600552643 /* EncryptionTest.m in Sources */,
+				241076D91A776A7500469AAF /* appcsecurity.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +226,7 @@
 		2470DDA61A75764E00552643 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -258,13 +260,14 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Debug;
 		};
 		2470DDA71A75764E00552643 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -291,6 +294,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = /usr/local/include;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

@@ -8,6 +8,7 @@
  */
 
 #import "appcsecurity.h"
+#import <boost/preprocessor/cat.hpp>
 
 // by default, we use a relatively small number of rotations on the phone for the best speed
 #define ITERATIONS 100
@@ -16,6 +17,19 @@
 #define IV_LENGTH 32
 #define HMAC_LENGTH 64
 #define KEY_LENGTH kCCKeySizeAES256
+
+
+#ifndef APPC_OBFUSCATE_SEED
+#define APPC_OBFUSCATE_SEED fn
+#endif
+
+#define hexToString             BOOST_PP_CAT(APPC_OBFUSCATE_SEED,1)
+#define hexDataToString         BOOST_PP_CAT(APPC_OBFUSCATE_SEED,2)
+#define decodeB64AsHex          BOOST_PP_CAT(APPC_OBFUSCATE_SEED,3)
+#define constantTimeCompare     BOOST_PP_CAT(APPC_OBFUSCATE_SEED,4)
+#define dataFromHexString       BOOST_PP_CAT(APPC_OBFUSCATE_SEED,5)
+#define pbkdf2                  BOOST_PP_CAT(APPC_OBFUSCATE_SEED,6)
+#define aesDecrypt              BOOST_PP_CAT(APPC_OBFUSCATE_SEED,7)
 
 
 /**
@@ -67,7 +81,7 @@ static BOOL constantTimeCompare(NSString *a, NSString *b) {
 /**
  * convert a hex NSString* to NSData*
  */
-static NSData * dataFromHexString(NSString *originalHexString) {
+static NSData* dataFromHexString(NSString *originalHexString) {
 	NSString *hexString = [originalHexString stringByReplacingOccurrencesOfString:@"[ <>]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [originalHexString length])]; // strip out spaces (between every four bytes), "<" (at the start) and ">" (at the end)
 	NSMutableData *data = [NSMutableData dataWithCapacity:[hexString length] / 2];
 	for (NSInteger c = 0; c < [hexString length]; c += 2) {
@@ -89,7 +103,7 @@ static NSString* pbkdf2 (NSString *key, NSString *saltAndPepper, size_t keyLengt
 	NSData *saltPepperData = [saltAndPepper dataUsingEncoding:NSUTF8StringEncoding];
 	uint8_t *saltPepperBytes = (uint8_t*)[saltPepperData bytes];
 
-	uint8_t *result = malloc(sizeof(uint8_t)*keyLength);
+	uint8_t *result = (uint8_t*)malloc(sizeof(uint8_t)*keyLength);
 
 	int status = CCKeyDerivationPBKDF(kCCPBKDF2, keyBytes, (size_t)keyData.length, saltPepperBytes, (size_t)saltAndPepper.length, kCCPRFHmacAlgSHA1, (uint)ITERATIONS, result, keyLength);
 
@@ -98,7 +112,7 @@ static NSString* pbkdf2 (NSString *key, NSString *saltAndPepper, size_t keyLengt
 		return nil;
 	}
 
-	NSString *pk = hexToString(result,keyLength);
+	auto pk = hexToString(result,keyLength);
 
 	free(result);
 
@@ -109,9 +123,9 @@ static NSString* pbkdf2 (NSString *key, NSString *saltAndPepper, size_t keyLengt
  * decrypt using AES a string of encrypted data encoded as hex
  */
 static NSData* aesDecrypt (NSString* keyHex, NSString *ivHex, NSString *encHex, float keyFactor) {
-	NSData *key = dataFromHexString(keyHex);
-	NSData *iv = dataFromHexString(ivHex);
-	NSData *enc = dataFromHexString(encHex);
+	auto key = dataFromHexString(keyHex);
+	auto iv = dataFromHexString(ivHex);
+	auto enc = dataFromHexString(encHex);
 
 	size_t bufferSize = enc.length + kCCBlockSizeAES128;
 	void *buffer = malloc (bufferSize);
@@ -141,7 +155,7 @@ static NSData* aesDecrypt (NSString* keyHex, NSString *ivHex, NSString *encHex, 
 /**
  * HMAC-256 data using key
  */
-NSString* APPCSECFN(hmac256)(NSString *key, NSString *data) {
+NSString* hmac256(NSString *key, NSString *data) {
 	const char *cKey  = [key cStringUsingEncoding:NSASCIIStringEncoding];
 	const char *cData = [data cStringUsingEncoding:NSASCIIStringEncoding];
 	unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
@@ -153,7 +167,7 @@ NSString* APPCSECFN(hmac256)(NSString *key, NSString *data) {
 /**
  * SHA1 a string
  */
-NSString * APPCSECFN(sha1)(NSString *str) {
+NSString* sha1(NSString *str) {
 	NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
 	uint8_t digest[CC_SHA1_DIGEST_LENGTH];
 
@@ -171,7 +185,7 @@ NSString * APPCSECFN(sha1)(NSString *str) {
 /**
  * decrypt an encrypted value using computed derived key, pepper and hmacKey and return resulting plainText
  */
-NSString* APPCSECFN(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size) {
+NSString* decryptWithKey(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size) {
 	NSString *encryptedText = encoding && [encoding isEqualToString:@"base64"] ? decodeB64AsHex(value) : value;
 
 	if ([encryptedText length] <= HMAC_LENGTH + SALT_LENGTH + IV_LENGTH) {
@@ -183,10 +197,10 @@ NSString* APPCSECFN(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NS
 	NSString *saltValue = [encryptedText substringWithRange:NSMakeRange(HMAC_LENGTH, SALT_LENGTH)];
 	NSString *ivValue = [encryptedText substringWithRange:NSMakeRange(HMAC_LENGTH + SALT_LENGTH, IV_LENGTH)];
 	NSString *encValue = [encryptedText substringFromIndex:HMAC_LENGTH + SALT_LENGTH + IV_LENGTH];
-	NSString *saltAndPepper = APPCSECFN(sha1)([NSString stringWithFormat:@"%@%@",saltValue,pepper]);
+	NSString *saltAndPepper = sha1([NSString stringWithFormat:@"%@%@",saltValue,pepper]);
 
 	NSString *hmacTestStr = [NSString stringWithFormat:@"%@%@%@",encValue,saltAndPepper,ivValue];
-	NSString *hmacTestValue = APPCSECFN(hmac256)(hmacKey, hmacTestStr);
+	NSString *hmacTestValue = hmac256(hmacKey, hmacTestStr);
 
 #if APPC_SECURITY_DEBUG && !TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
 	NSLog(@"encryptedText = %@",encryptedText);
@@ -210,7 +224,7 @@ NSString* APPCSECFN(decryptWithKey)(NSString *value, NSString *derivedKeyHex, NS
 /**
  * decrypt an encrypted value using key, pepper and hmacKey and return resulting plainText
  */
-NSString* APPCSECFN(decrypt)(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size) {
+NSString* decrypt(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size) {
 
 	NSString *encryptedText = encoding && [encoding isEqualToString:@"base64"] ? decodeB64AsHex(value) : value;
 
@@ -223,10 +237,10 @@ NSString* APPCSECFN(decrypt)(NSString *value, NSString *key, NSString *pepper, N
 	NSString *saltValue = [encryptedText substringWithRange:NSMakeRange(HMAC_LENGTH, SALT_LENGTH)];
 	NSString *ivValue = [encryptedText substringWithRange:NSMakeRange(HMAC_LENGTH + SALT_LENGTH, IV_LENGTH)];
 	NSString *encValue = [encryptedText substringFromIndex:HMAC_LENGTH + SALT_LENGTH + IV_LENGTH];
-	NSString *saltAndPepper = APPCSECFN(sha1)([NSString stringWithFormat:@"%@%@",saltValue,pepper]);
+	NSString *saltAndPepper = sha1([NSString stringWithFormat:@"%@%@",saltValue,pepper]);
 
 	NSString *hmacTestStr = [NSString stringWithFormat:@"%@%@%@",encValue,saltAndPepper,ivValue];
-	NSString *hmacTestValue = APPCSECFN(hmac256)(hmacKey, hmacTestStr);
+	NSString *hmacTestValue = hmac256(hmacKey, hmacTestStr);
 
 #if APPC_SECURITY_DEBUG && !TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
 	NSLog(@"encryptedText = %@",encryptedText);
