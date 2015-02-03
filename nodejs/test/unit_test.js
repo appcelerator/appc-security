@@ -47,7 +47,6 @@ describe('library', function(){
 	});
 
 	it('should encrypt', function(){
-		lib.DEBUG = true;
 		var key = 'key',
 			pepper = 'pepper',
 			hmacKey = 'hmacKey',

@@ -130,7 +130,7 @@ function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
 			console.log('------- BEGIN ENCRYPTION ------\n');
 			console.log('size=',size+'\n');
 			console.log('keySizeFactor=',keySizeFactor+'\n');
-			console.log('hmacKey=',hmacKey+'\n');
+			console.log('hmac_key=',hmac_key+'\n');
 			console.log('hmacEncoding=',hmacEncoding.length,hmacEncoding+'\n');
 			console.log('salt=',salt.length,salt+'\n');
 			console.log('pepper=',pepper+'\n');
@@ -204,7 +204,7 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
 			console.log('------- BEGIN DECRYPTION ------\n');
 			console.log('size=',size+'\n');
 			console.log('keySizeFactor=',keySizeFactor+'\n');
-			console.log('hmacKey=',hmacKey+'\n');
+			console.log('hmac_key=',hmac_key+'\n');
 			console.log('hmac=',hmacValue+'\n');
 			console.log('salt=',salt+'\n');
 			console.log('pepper=',pepper+'\n');
@@ -251,12 +251,60 @@ exports.sha1 = sha1;
 exports.generateLargeRandomValue = generateLargeRandomValue;
 exports.encrypt = encrypt;
 exports.decrypt = decrypt;
-exports.HMAC_LENGTH = HMAC_LENGTH;
-exports.ITERATIONS = ITERATIONS;
-exports.SALT_LENGTH = SALT_LENGTH;
-exports.IV_LENGTH = IV_LENGTH;
-exports.KEY_LENGTH = KEY_LENGTH;
-exports.DEBUG = DEBUG;
+
+Object.defineProperty(exports,'HMAC_LENGTH',{
+	set: function(value) {
+		HMAC_LENGTH = value;
+	},
+	get: function() {
+		return HMAC_LENGTH;
+	}
+});
+
+Object.defineProperty(exports,'ITERATIONS',{
+	set: function(value) {
+		ITERATIONS = value;
+	},
+	get: function() {
+		return ITERATIONS;
+	}
+});
+
+Object.defineProperty(exports,'SALT_LENGTH',{
+	set: function(value) {
+		SALT_LENGTH = value;
+	},
+	get: function() {
+		return SALT_LENGTH;
+	}
+});
+
+Object.defineProperty(exports,'IV_LENGTH',{
+	set: function(value) {
+		IV_LENGTH = value;
+	},
+	get: function() {
+		return IV_LENGTH;
+	}
+});
+
+Object.defineProperty(exports,'KEY_LENGTH',{
+	set: function(value) {
+		KEY_LENGTH = value;
+	},
+	get: function() {
+		return KEY_LENGTH;
+	}
+});
+
+Object.defineProperty(exports,'DEBUG',{
+	set: function(value) {
+		DEBUG = value;
+	},
+	get: function() {
+		return DEBUG;
+	}
+});
 
 
 // for testing
