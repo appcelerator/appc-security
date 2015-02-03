@@ -150,6 +150,20 @@ describe('library', function(){
 		should(result2).equal('ABC');
 	});
 
+	it('should encrypt json string', function(){
+		var key = lib.generateLargeRandomValue(),
+			pepper = lib.generateLargeRandomValue(),
+			hmacKey = lib.generateLargeRandomValue(),
+			json = JSON.stringify({user:'foo',org:'bar'}),
+			result = lib.encrypt(json,key,pepper,hmacKey);
+		should(result).be.object;
+		should(result.value).not.match(/=$/);
+
+		var result2 = lib.decrypt(result.value,key,pepper,hmacKey);
+		should(result2).be.string;
+		should(result2).equal(json);
+	});
+
 	it('should encrypt fail with invalid encoding', function(){
 		var key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
