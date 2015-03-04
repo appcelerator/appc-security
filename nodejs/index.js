@@ -112,10 +112,8 @@ function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
 			cipher = crypto.createCipheriv('AES-'+size+'-CBC', derivedKey, iv);
 
 		// encrypt the plainText
-		cipher.setEncoding('hex');
-		cipher.write(plainText);
-		cipher.end();
-		var encrypted = cipher.read();
+		var encrypted = cipher.update(plainText,'utf-8','hex');
+		encrypted += cipher.final('hex');
 
 		// create an HMAC of the encrypted value + the saltAndPepper + the iv
 		// we'll use this before decrypting to validate that the encrypted value
@@ -233,8 +231,8 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
 			console.log('------- END DECRYPTION ------\n');
 		}
 
-		cipher.update(encrypted,'hex','utf8');
-		return cipher.final('utf8');
+		var decrypted = cipher.update(encrypted,'hex','utf-8');
+		return decrypted + cipher.final('utf-8');
 	}
 	catch (E) {
 		if (E instanceof SecurityError) {
