@@ -2,8 +2,8 @@
 	"browser": true,
 	"camelcase": false,
 	"curly": true,
-	"eqnull": true,
 	"eqeqeq": true,
+	"eqnull": true,
 	"expr": true,
 	"immed": true,
 	"indent": 4,
@@ -19,5 +19,6 @@
 	"node": true,
 	"-W104": true,
 	"-W068": true,
-	"globals": {}
+	"globals": {},
+	"node": true
 }

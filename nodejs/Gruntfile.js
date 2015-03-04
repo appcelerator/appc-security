@@ -18,12 +18,20 @@ module.exports = function(grunt) {
 			},
 			src: ['lib/**/*.js', 'test/**/*.js']
 		},
+		jscs: {
+            options: {
+                config: '.jscsrc',
+                reporter: 'inline'
+            },
+			src: ['lib/**/*.js', 'test/**/*.js']
+		},
 		kahvesi: { src: 'test/**/*_test.js' },
 	});
 
 	// Load grunt plugins for modules
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-jscs');
 	grunt.loadNpmTasks('grunt-kahvesi');
 
 	// compose our various coverage reports into one html report
@@ -37,5 +45,5 @@ module.exports = function(grunt) {
 	});
 
 	// register tasks
-	grunt.registerTask('default', ['jshint','mochaTest:unit','kahvesi']);
+	grunt.registerTask('default', ['jshint','jscs','mochaTest:unit','kahvesi']);
 };

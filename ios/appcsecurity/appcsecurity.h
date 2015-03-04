@@ -7,16 +7,15 @@
  * of the Appcelerator license agreement.
  */
 
-
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCrypto.h>
 
 // the build script will generate these each time you build
 #ifdef APPC_OBFUSCATE_SYMBOLS
-#define hmac256 		APPC_SYMBOL_HMAC256
-#define sha1 			APPC_SYMBOL_SHA1
-#define decrypt 		APPC_SYMBOL_DECRYPT
-#define decryptWithKey 	APPC_SYMBOL_DECRYPTWITHKEY
+#define hmac256 APPC_SYMBOL_HMAC256
+#define sha1 APPC_SYMBOL_SHA1
+#define decrypt APPC_SYMBOL_DECRYPT
+#define decryptWithKey APPC_SYMBOL_DECRYPTWITHKEY
 #endif
 
 #ifdef __cplusplus
@@ -32,7 +31,7 @@
  * @param {NSString} data to HMAC
  * @returns {NSString} HMAC value
  */
-EXTERN NSString* hmac256(NSString *key, NSString *data);
+EXTERN NSString *hmac256(NSString *key, NSString *data);
 
 /**
  * produce a SHA1 from a data
@@ -40,7 +39,7 @@ EXTERN NSString* hmac256(NSString *key, NSString *data);
  * @param {NSString} data to hash
  * @returns {NSString} hashed value of data
  */
-EXTERN NSString* sha1(NSString *data);
+EXTERN NSString *sha1(NSString *data);
 
 /**
  * decrypt an encrypted value using key, pepper and hmacKey and return resulting plainText
@@ -53,7 +52,7 @@ EXTERN NSString* sha1(NSString *data);
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-EXTERN NSString* decrypt(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
+EXTERN NSString *decrypt(NSString *value, NSString *key, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
 
 /**
  * decrypt an encrypted value using computed derived key, pepper and hmacKey and return resulting plainText
@@ -66,5 +65,4 @@ EXTERN NSString* decrypt(NSString *value, NSString *key, NSString *pepper, NSStr
  * @param {size_t} size of the AES encoding.  Can pass in 128, 192 or 512 (default).
  * @returns {NSString} plain text or nil if decryption failed
  */
-EXTERN NSString* decryptWithKey(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
-
+EXTERN NSString *decryptWithKey(NSString *value, NSString *derivedKeyHex, NSString *pepper, NSString *hmacKey, NSString *encoding, size_t size);
