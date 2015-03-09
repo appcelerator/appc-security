@@ -1,0 +1,85 @@
+<!--
+Copyright (c) 2010 by Appcelerator, Inc. All Rights Reserved.
+This code is proprietary and confidential to Appcelerator
+and not for redistribution.
+-->
+<project default="build.jar">
+	<property file="build.properties"/>
+	<property environment="env."/>
+
+	<target name="check.ti.sdk" unless="ti.sdk">
+		<echo>
+			Error: This build script requires the "ti.sdk" property to be set
+			to the path of this platform's Titanium Mobile SDK.
+		</echo>
+		<fail/>
+	</target>
+
+	<target name="check.android.sdk" unless="android.sdk">
+		<echo>
+			Error: This build script requires the "android.sdk" property to be set
+			to the path of your Android SDK.
+		</echo>
+		<fail/>
+	</target>
+
+	<target name="check.proguard" unless="proguard">
+		<echo>
+			Error: This build script requires the "proguard" property to be set
+			to the path of the proguard jar
+		</echo>
+		<fail/>
+	</target>
+
+	<target name="build" depends="check.android.sdk,check.ti.sdk,check.proguard">
+		<property name="kroll.common.jar" location="${ti.sdk}/android/kroll-common.jar"/>
+		<property name="android.support.v4.jar" location="${ti.sdk}/android/android-support-v4.jar"/>
+		<property name="android.support.v7.appcompat.jar" location="${ti.sdk}/android/android-support-v7-appcompat.jar"/>
+		<property name="android.jar" location="${android.sdk}/platforms/android-10/android.jar"/>
+		<property name="commons.codec.jar" location="${ti.sdk}/android/ti-commons-codec-1.3.jar"/>
+		
+		<path id="verify-classpath">
+			<fileset file="${kroll.common.jar}"/>
+			<fileset file="${android.support.v4.jar}"/>
+			<fileset file="${android.support.v7.appcompat.jar}"/>
+			<fileset file="${android.jar}"/>
+			<fileset file="${commons.codec.jar}"/>
+		</path>
+		<mkdir dir="bin" />
+		<mkdir dir="dist" />
+		<delete includeemptydirs="true" defaultexcludes="false">
+			<fileset dir="bin" includes="org/**/*"/>
+			<fileset dir="dist" includes="*.jar"/>
+		</delete>
+		<condition property="javac.debug" value="true" else="false">
+			<isset property="debug"/>
+		</condition>
+		<javac
+			srcdir="src"
+			destdir="bin"
+			classpathref="verify-classpath"
+			includeantruntime="false"
+			debug="${javac.debug}"
+			source="1.5"/>
+	</target>
+
+	<target name="build.jar" depends="build">
+		<condition property="destjar" value="dist/lib/titanium-security.jar" else="dist/temp.jar">
+			<isset property="debug"/>
+		</condition>
+		<jar destfile="${destjar}" basedir="bin"/>
+		<antcall target="build.proguard.jar"/>
+	</target>
+
+	<target name="build.proguard.jar" unless="debug">
+		<java fork="true" jar="${proguard}" >
+			<arg line="-libraryjars ${kroll.common.jar}"/>
+			<arg line="-libraryjars ${android.support.v4.jar}"/>
+			<arg line="-libraryjars ${android.support.v7.appcompat.jar}"/>
+			<arg line="-libraryjars ${android.jar}"/>
+			<arg line="-libraryjars ${commons.codec.jar}"/>
+			<arg line="-injars dist/temp.jar -outjars dist/lib/titanium-security.jar @security.pro"/>
+		</java>
+		<delete file="dist/temp.jar"/>
+	</target>
+</project>

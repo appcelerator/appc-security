@@ -1,0 +1,3 @@
+ti.sdk=/path/to/mobilesdk/osx/version
+android.sdk=/path/to/android-sdk
+proguard=/path/to/proguard/lib/proguard.jar
