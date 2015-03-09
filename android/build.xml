@@ -64,7 +64,7 @@ and not for redistribution.
 	</target>
 
 	<target name="build.jar" depends="build">
-		<condition property="destjar" value="dist/lib/titanium-security.jar" else="dist/temp.jar">
+		<condition property="destjar" value="dist/lib/appcelerator-security.jar" else="dist/temp.jar">
 			<isset property="debug"/>
 		</condition>
 		<jar destfile="${destjar}" basedir="bin"/>
@@ -78,7 +78,7 @@ and not for redistribution.
 			<arg line="-libraryjars ${android.support.v7.appcompat.jar}"/>
 			<arg line="-libraryjars ${android.jar}"/>
 			<arg line="-libraryjars ${commons.codec.jar}"/>
-			<arg line="-injars dist/temp.jar -outjars dist/lib/titanium-security.jar @security.pro"/>
+			<arg line="-injars dist/temp.jar -outjars dist/lib/appcelerator-security.jar @security.pro"/>
 		</java>
 		<delete file="dist/temp.jar"/>
 	</target>
