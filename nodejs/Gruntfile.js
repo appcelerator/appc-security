@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		    options: {
 		      // LCOV coverage file relevant to every target
 		      src: 'coverage/lcov.info',
-		      force: false
+		      force: true
 		    },
 		    grunt_coveralls: {
 		      // Target-specific LCOV coverage file
@@ -32,7 +32,6 @@ module.exports = function(grunt) {
 	// Load grunt plugins for modules
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-appc-js');
-	grunt.loadNpmTasks('grunt-jscs');
 	grunt.loadNpmTasks('grunt-kahvesi');
 	grunt.loadNpmTasks('grunt-coveralls');
 
