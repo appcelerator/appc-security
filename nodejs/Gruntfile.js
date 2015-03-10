@@ -12,10 +12,7 @@ module.exports = function(grunt) {
 				src: ['test/**/*_test.js']
 			},
 		},
-		jshint: {
-			options: {
-				jshintrc: true
-			},
+		appcJs: {
 			src: ['lib/**/*.js', 'test/**/*.js']
 		},
 		kahvesi: { src: 'test/**/*_test.js' },
@@ -23,7 +20,7 @@ module.exports = function(grunt) {
 		    options: {
 		      // LCOV coverage file relevant to every target
 		      src: 'coverage/lcov.info',
-		      force: false
+		      force: true
 		    },
 		    grunt_coveralls: {
 		      // Target-specific LCOV coverage file
@@ -34,7 +31,7 @@ module.exports = function(grunt) {
 
 	// Load grunt plugins for modules
 	grunt.loadNpmTasks('grunt-mocha-test');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-appc-js');
 	grunt.loadNpmTasks('grunt-kahvesi');
 	grunt.loadNpmTasks('grunt-coveralls');
 
@@ -49,5 +46,5 @@ module.exports = function(grunt) {
 	});
 
 	// register tasks
-	grunt.registerTask('default', ['jshint','mochaTest:unit','kahvesi','coveralls']);
+	grunt.registerTask('default', ['appcJs','mochaTest:unit','kahvesi','coveralls']);
 };
