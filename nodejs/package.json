@@ -22,11 +22,10 @@
   "homepage": "https://github.com/appcelerator/appc-security",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-kahvesi": "^0.1.0",
+    "grunt-appc-js": "*",
+    "grunt-coveralls": "^1.0.0",
+    "grunt-kahvesi": "git://github.com/appcelerator-modules/grunt-kahvesi.git",
     "grunt-mocha-test": "^0.12.7",
-    "grunt-jscs": "^1.5.0",
-    "jscs-jsdoc": "^0.4.5",
     "mocha": "^2.1.0",
     "should": "^4.6.1"
   }

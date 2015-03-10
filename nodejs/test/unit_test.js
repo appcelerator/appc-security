@@ -1,4 +1,4 @@
-var should = require('should'),
+var should = require('should'), // jshint ignore:line
 	lib = require('../');
 
 describe('library', function () {
