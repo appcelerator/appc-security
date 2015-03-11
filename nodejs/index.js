@@ -212,7 +212,7 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
 			console.log('hmac result=',hmac+'\n');
 		}
 
-		// test for constant time comparision which both checks the values and ensures that 
+		// test for constant time comparison which both checks the values and ensures that 
 		// we don't have a timing attack. this validates that the encrypted value hasn't been
 		// modified from what we encrypted
 		if (!constantTimeCompare(hmac,hmacValue)) {
