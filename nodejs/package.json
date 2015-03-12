@@ -23,7 +23,7 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-appc-js": "*",
-    "grunt-appc-coverage": "^0.1.2",
+    "grunt-appc-coverage": "git://github.com/appcelerator-modules/grunt-appc-coverage.git",
     "grunt-kahvesi": "git://github.com/appcelerator-modules/grunt-kahvesi.git",
     "grunt-mocha-test": "^0.12.7",
     "mocha": "^2.1.0",
