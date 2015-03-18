@@ -1,6 +1,9 @@
-# Appcelerator Security Libraries [![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security) [![Coverage Status](https://coverage.appcelerator.com/appcelerator/appc-security/label_master.svg)](https://coverage.appcelerator.com/appcelerator#appc-security)
+# Appcelerator Security Libraries
 
-These are various platform related security libraries intended to be used by Appcelerator software.
+> These are various platform related security libraries intended to be used by Appcelerator software.
+
+ [![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security) [![Coverage Status](https://coverage.appcelerator.com/appcelerator/appc-security/label_master.svg)](https://coverage.appcelerator.com/appcelerator#appc-security)
+[![NPM version](https://badge.fury.io/js/appc-security.svg)](http://badge.fury.io/js/appc-security)
 
 It is made available on GitHub for peer review and for transparency in our security practices.  If you find a security related issue with this software, please use [Responsible Disclosure of Security Vulnerabilities](http://www.appcelerator.com/privacy/responsible-disclosure-of-security-vulnerabilities/) by reporting it.
 
