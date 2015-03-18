@@ -1,4 +1,4 @@
-# Appcelerator Security Libraries [![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security)
+# Appcelerator Security Libraries [![Build Status](https://travis-ci.org/appcelerator/appc-security.svg?branch=master)](https://travis-ci.org/appcelerator/appc-security) [![Coverage Status](https://coverage.appcelerator.com/appcelerator/appc-security/label_master.svg)](https://coverage.appcelerator.com/appcelerator#appc-security)
 
 These are various platform related security libraries intended to be used by Appcelerator software.
 
