@@ -22,15 +22,15 @@
   },
   "homepage": "https://github.com/appcelerator/appc-security",
   "devDependencies": {
-    "grunt-cli": "*",
+    "grunt-appc-coverage": "^0.1.5",
     "grunt-appc-js": "*",
     "grunt-bump": "^0.3.0",
-    "grunt-appc-coverage": "^0.1.5",
+    "grunt-cli": "^0.1.13",
     "grunt-kahvesi": "git://github.com/appcelerator-modules/grunt-kahvesi.git",
     "grunt-mocha-test": "^0.12.7",
+    "load-grunt-tasks": "^1.0.0",
     "mocha": "^2.1.0",
     "should": "^4.6.1",
-    "load-grunt-tasks": "^1.0.0",
     "time-grunt": "^1.0.0"
   }
 }

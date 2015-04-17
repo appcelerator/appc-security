@@ -1,10 +1,10 @@
 language: objective-c
 sudo: false
 before_script:
-- cd nodejs ; npm install; cd ..
+- cd nodejs && npm install && cd ..
 script:
-- cd ios; ./build.sh; cd ..
-- cd nodejs; grunt; cd ..
+- cd ios && ./build.sh && cd ..
+- cd nodejs && grunt && cd ..
 deploy:
   provider: npm
   email: npmjs@appcelerator.com
