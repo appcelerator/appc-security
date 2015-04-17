@@ -1,7 +1,15 @@
 language: objective-c
 sudo: false
 before_script:
-- cd nodejs ; npm install -g grunt-cli; npm install; cd ..
+- cd nodejs ; npm install; cd ..
 script:
 - cd ios; ./build.sh; cd ..
 - cd nodejs; grunt; cd ..
+deploy:
+  provider: npm
+  email: npmjs@appcelerator.com
+  api_key:
+    secure: Q0LHA/Cd8aJ7QXvBILln4a/qjJ0NqZqdOT2otZ25dU6eLykDfulMEsnDP0THzXPRXmJ9eN6vPgmvgPToEn3ZeqQfjsynKDFINl1ByenIkmgWkVca85mr3KJ6wbbENup0IFsdWfH/oYHyaSf74MhkSMGGBnOxv34++/XRggenLNw=
+  on:
+    tags: true
+    repo: appcelerator/appc-security
