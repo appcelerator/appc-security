@@ -4,7 +4,8 @@
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "preinstall": "[ -e ./node_modules/ensure-latest/index.js ] && node ./node_modules/ensure-latest || echo"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,9 @@
   },
   "homepage": "https://github.com/appcelerator/appc-security",
   "devDependencies": {
-    "grunt": "^0.4.5",
+    "grunt-cli": "*",
     "grunt-appc-js": "*",
+    "grunt-bump": "^0.3.0",
     "grunt-appc-coverage": "^0.1.5",
     "grunt-kahvesi": "git://github.com/appcelerator-modules/grunt-kahvesi.git",
     "grunt-mocha-test": "^0.12.7",

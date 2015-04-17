@@ -21,6 +21,13 @@ module.exports = function(grunt) {
 				src: 'coverage/lcov.info',
 				force: true
 			}
+		},
+		bump: {
+			options: {
+				files: ['package.json'],
+				commitFiles: ['package.json'],
+				pushTo: 'appcelerator'
+			}
 		}
 	});
 
