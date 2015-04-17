@@ -31,11 +31,9 @@ module.exports = function(grunt) {
 		}
 	});
 
-	// Load grunt plugins for modules
-	grunt.loadNpmTasks('grunt-mocha-test');
-	grunt.loadNpmTasks('grunt-appc-js');
-	grunt.loadNpmTasks('grunt-kahvesi');
-	grunt.loadNpmTasks('grunt-appc-coverage');
+	// These plugins provide necessary tasks.
+    require( "load-grunt-tasks" )( grunt );
+    require( "time-grunt" )( grunt );
 
 	// compose our various coverage reports into one html report
 	grunt.registerTask('report', function() {
