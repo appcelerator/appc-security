@@ -11,6 +11,7 @@ It is made available on GitHub for peer review and for transparency in our secur
 
 - [NodeJS](https://github.com/appcelerator/appc-security/tree/master/nodejs) - Node NPM module
 - [iOS](https://github.com/appcelerator/appc-security/tree/master/ios) - iOS Static Library
+- [Android](https://github.com/appcelerator/appc-security/tree/master/android) - Android JAR
 
 ## License
 
