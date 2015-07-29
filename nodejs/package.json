@@ -1,6 +1,6 @@
 {
   "name": "appc-security",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,14 @@
     "security"
   ],
   "author": "Jeff Haynie",
-  "license": "Appcelerator Commercial / Proprietary",
+  "license": "LicenseRef-LICENSE",
   "bugs": {
     "url": "https://github.com/appcelerator/appc-security/issues"
   },
   "homepage": "https://github.com/appcelerator/appc-security",
   "devDependencies": {
-    "grunt-cli": "*",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-appc-js": "*",
     "grunt-bump": "^0.3.0",
     "grunt-appc-coverage": "^0.1.5",
