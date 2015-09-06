@@ -1,6 +1,6 @@
 {
   "name": "appc-security",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {
@@ -22,16 +22,21 @@
   },
   "homepage": "https://github.com/appcelerator/appc-security",
   "devDependencies": {
+    "express": "^4.13.3",
     "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
+    "grunt-appc-coverage": "^0.1.5",
     "grunt-appc-js": "*",
     "grunt-bump": "^0.3.0",
-    "grunt-appc-coverage": "^0.1.5",
-    "grunt-kahvesi": "git://github.com/appcelerator-modules/grunt-kahvesi.git",
+    "grunt-cli": "^0.1.13",
+    "grunt-kahvesi": "appcelerator-modules/grunt-kahvesi",
     "grunt-mocha-test": "^0.12.7",
-    "mocha": "^2.1.0",
-    "should": "^4.6.1",
     "load-grunt-tasks": "^1.0.0",
+    "mocha": "^2.1.0",
+    "request": "^2.61.0",
+    "should": "^4.6.1",
     "time-grunt": "^1.0.0"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^5.0.5"
   }
 }
