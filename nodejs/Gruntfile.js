@@ -32,8 +32,8 @@ module.exports = function(grunt) {
 	});
 
 	// These plugins provide necessary tasks.
-    require( "load-grunt-tasks" )( grunt );
-    require( "time-grunt" )( grunt );
+	require( "load-grunt-tasks" )( grunt );
+	require( "time-grunt" )( grunt );
 
 	// compose our various coverage reports into one html report
 	grunt.registerTask('report', function() {

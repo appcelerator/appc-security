@@ -1,6 +1,6 @@
 {
   "name": "appc-security",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {

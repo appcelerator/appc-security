@@ -73,7 +73,7 @@ describe('middleware', function () {
 			}
 		};
 		app.render = function (template, params, callback) {
-			if (template === 'unauth' && params.reason === 'unauthorized' && params.error.message === 'missing apikey header') {
+			if (template === 'unauth' && params.reason === 'unauthorized' && params.error.message === 'missing authorization header') {
 				callback(null, 'OK');
 			} else {
 				callback(new Error('invalid request'));
@@ -104,7 +104,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':401,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -128,7 +128,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':401,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -152,7 +152,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':401,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -176,7 +176,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':401,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -200,7 +200,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':401,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -232,7 +232,7 @@ describe('middleware', function () {
 				'success':false,
 				'code':402,
 				'message':'unauthorized',
-				'error':'missing apikey header'
+				'error':'missing authorization header'
 			}));
 			done();
 		});
@@ -322,7 +322,7 @@ describe('middleware', function () {
 				success:false,
 				code:401,
 				message:'unauthorized',
-				error:'missing apikey header',
+				error:'missing authorization header',
 				url:'http://127.0.0.1:9999/failed?redirect=http%3A%2F%2F127.0.0.1%3A9999%2F'
 			}));
 			done();
@@ -369,19 +369,19 @@ describe('middleware', function () {
 		should(middleware).be.a.function;
 		app.use(middleware);
 		app.get('/', function (req, resp) {
-			if (req.apikey && req.apikey.apikey === '123' && req.apikey.headers && req.apikey.headers.foo === 'bar') {
+			if (req.authorization && req.authorization.apikey === '123' && req.authorization.headers && req.authorization.headers.foo === 'bar') {
 				return resp.send('OK');
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'secret', 5000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'});
 		var opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
-				accept: 'text/html',
-				apikey: token
+				accept: 'text/html'
 			}
 		};
+		lib.generateAPITokenHTTPAuthorization (token, 'secret', opts.headers);
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK');
@@ -402,14 +402,14 @@ describe('middleware', function () {
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'secret', 5000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'});
 		var opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
-				accept: 'text/html',
-				_apikey: token
+				accept: 'text/html'
 			}
 		};
+		lib.generateAPITokenHTTPAuthorization(token, 'secret', opts.headers, '_apikey');
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK');
@@ -425,19 +425,19 @@ describe('middleware', function () {
 		should(middleware).be.a.function;
 		app.use(middleware);
 		app.get('/', function (req, resp) {
-			if (req.apikey && req.apikey.apikey === '123' && req.apikey.headers && req.apikey.headers.foo === 'bar') {
+			if (req.authorization && req.authorization.apikey === '123' && req.authorization.headers && req.authorization.headers.foo === 'bar') {
 				return resp.send('OK');
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'secret', 5000, {foo:'bar'}, 'utf8');
+		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'}, 'utf8');
 		var opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
-				accept: 'text/html',
-				apikey: token
+				accept: 'text/html'
 			}
 		};
+		lib.generateAPITokenHTTPAuthorization(token, 'secret', opts.headers);
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK');
@@ -449,7 +449,7 @@ describe('middleware', function () {
 		var middleware = new lib.Middleware({
 			secret: 'secret',
 			encoding: 'utf8',
-			successHandler: function (req, resp, encoded) {
+			successHandler: function (req, resp, next, encoded) {
 				resp.send('OK ' + encoded.apikey);
 			}
 		});
@@ -458,14 +458,14 @@ describe('middleware', function () {
 		app.get('/', function (req, resp) {
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'secret', 5000, {foo:'bar'}, 'utf8');
+		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'}, 'utf8');
 		var opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
-				accept: 'text/html',
-				apikey: token
+				accept: 'text/html'
 			}
 		};
+		lib.generateAPITokenHTTPAuthorization(token, 'secret', opts.headers);
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK 123');

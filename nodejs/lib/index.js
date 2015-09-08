@@ -233,31 +233,35 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
 }
 
 /**
- * generate a session token as a JSON Web Token which is encoded in base64 (default).
+ * generate a session token as a JSON Web Token which is encoded using encoding (utf-8 is default).
  * if you want the encoding to be normal plain text, pass in 'utf8' as the value
  * to encoding
  *
  * @param {string} apikey the api key string
- * @param {string} secret the secret key string
+ * @param {string} key_secret the apikey secret key string
+ * @param {string} master_secret the master secret key string
  * @param {number} expiry the expiration time in milliseconds
  * @param {Object} metadata extra metadata as headers to encode in the token
- * @param {string} encoding format to return, defaults to base64
+ * @param {string} encoding format to return, defaults to utf8
  * @returns {string} encoded session token
  */
-function createSessionTokenFromAPIKey (apikey, secret, expiry, metadata, encoding) {
+function createSessionTokenFromAPIKey (apikey, key_secret, master_secret, expiry, metadata, encoding) {
+	metadata = metadata || {};
+	metadata.$ks = key_secret;
 	var jwt = require('jsonwebtoken'),
 		object = {
 			apikey: apikey,
 			headers: metadata
 		},
+		secret = crypto.pbkdf2Sync(apikey, sha1(apikey + key_secret + master_secret), 100, 16).toString('base64'),
 		options = {
 			expiresInSeconds: expiry / 1000,
 			issuer: 'https://security.appcelerator.com',
 			algorithm: 'HS256',
 			subject: 'apikey'
 		},
-		encoded = jwt.sign(object, sha1(secret), options);
-	return new Buffer(encoded).toString(encoding || 'base64');
+		encoded = jwt.sign(object, secret, options);
+	return new Buffer(encoded).toString(encoding || 'utf8');
 }
 
 /**
@@ -265,16 +269,20 @@ function createSessionTokenFromAPIKey (apikey, secret, expiry, metadata, encodin
  * exception if not valid
  *
  * @param {string} token encoded token value
- * @param {string} secret the secret key string
+ * @param {string} master_secret the secret key string
  * @param {string} encoding format of the token, defaults to base64
  * @returns {Object} decoded value
  */
-function verifySessionTokenForAPIKey (token, secret, encoding) {
-	var jwt = require('jsonwebtoken');
+function verifySessionTokenForAPIKey (token, master_secret, encoding) {
 	try {
-		return jwt.verify(new Buffer(token, encoding || 'base64').toString(), sha1(secret), {algorithm: 'HS256', issuer: 'https://security.appcelerator.com'});
+		var jwt = require('jsonwebtoken'),
+			buf = new Buffer(token, encoding || 'utf8').toString(),
+			decoded = jwt.decode(buf, {complete: true}),
+			secret = crypto.pbkdf2Sync(decoded.payload.apikey, sha1(decoded.payload.apikey + decoded.payload.headers.$ks + master_secret), 100, 16).toString('base64');
+		return jwt.verify(buf, secret, {algorithm: 'HS256', issuer: 'https://security.appcelerator.com'});
 	}
 	catch (e) {
+		// console.log(e.stack);
 		var message = e.message.replace(/jwt/g, 'token');
 		var ex = new SecurityError(message);
 		if (e.expiredAt) {
@@ -284,6 +292,43 @@ function verifySessionTokenForAPIKey (token, secret, encoding) {
 	}
 }
 
+/**
+ * generate an appropriate HTTP Authorization header for the token using secret
+ */
+function generateAPITokenHTTPAuthorization (token, secret, headers, headerName) {
+	var jwt = require('jsonwebtoken'),
+		decoded = jwt.decode(token, {complete: true}),
+		hmac = crypto.createHmac('SHA256', decoded && decoded.payload && decoded.payload.headers && decoded.payload.headers.$ks);
+	hmac.update(token);
+	var result = 'APIKey ' + hmac.digest('hex') + ' ' + token;
+	headers && (headers[headerName || 'authorization'] = result);
+	return result;
+}
+
+var AuthorizationRegExp = /^APIKey\s(\w+)\s([\w\.=-]+)$/;
+/**
+ * verify a HTTP Authorization header as a valid API key and return the
+ * decoded value or raise an SecurityError if any errors decoding
+ */
+function validateAPITokenFromHTTPAuthorization (secret, authorization, encoding) {
+	if (!authorization) {
+		throw new SecurityError('missing authorization');
+	}
+	var tok = AuthorizationRegExp.exec(authorization);
+	if (!tok || tok.length !== 3) {
+		throw new SecurityError('invalid authorization');
+	}
+	var token = tok[2],
+		encoded = verifySessionTokenForAPIKey(token, secret, encoding),
+		hmac = crypto.createHmac('SHA256', encoded.headers && encoded.headers.$ks);
+	hmac.update(token);
+	hmac = hmac.digest('hex');
+	if (tok[1] !== hmac) {
+		throw new SecurityError('invalid authorization');
+	}
+	return encoded;
+}
+
 // export our APIs
 exports.sha1 = sha1;
 exports.generateLargeRandomValue = generateLargeRandomValue;
@@ -291,11 +336,19 @@ exports.encrypt = encrypt;
 exports.decrypt = decrypt;
 exports.createSessionTokenFromAPIKey = createSessionTokenFromAPIKey;
 exports.verifySessionTokenForAPIKey = verifySessionTokenForAPIKey;
+exports.generateAPITokenHTTPAuthorization = generateAPITokenHTTPAuthorization;
+exports.validateAPITokenFromHTTPAuthorization = validateAPITokenFromHTTPAuthorization;
 
 // jscs:disable jsDoc
 Object.defineProperty(exports, 'Middleware', {
 	get: function () {
 		return require('./middleware');
+	}
+});
+
+Object.defineProperty(exports, 'Plugin', {
+	get: function () {
+		return require('./plugin');
 	}
 });
 

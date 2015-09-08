@@ -247,7 +247,7 @@ describe('library', function () {
 	});
 
 	it('should support encoding session token for API key', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '456', 10000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, {foo:'bar'});
 		should(token).be.a.string;
 		var result = lib.verifySessionTokenForAPIKey(token, '456');
 		should(result).be.an.object;
@@ -262,7 +262,7 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with invalid secret', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '456', 10000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, {foo:'bar'});
 		should(token).be.a.string;
 		(function () {
 			lib.verifySessionTokenForAPIKey(token, '123');
@@ -270,7 +270,7 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with expired token', function (done) {
-		var token = lib.createSessionTokenFromAPIKey('123', '456', 1000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
 		should(token).be.a.string;
 		setTimeout(function () {
 			(function () {
@@ -281,7 +281,7 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with expired token and expiredAt property', function (done) {
-		var token = lib.createSessionTokenFromAPIKey('123', '456', 1000, {foo:'bar'});
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
 		should(token).be.a.string;
 		setTimeout(function () {
 			try {
@@ -297,12 +297,21 @@ describe('library', function () {
 	});
 
 	it('should encoding session token for API key with utf8 encoding', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '456', 1000, {foo:'bar'}, 'utf8');
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'}, 'utf8');
 		should(token).be.a.string;
 		var encoded = lib.verifySessionTokenForAPIKey(token, '456', 'utf8');
 		should(encoded).be.an.object;
 		should(encoded).have.property('apikey', '123');
 		should(encoded).have.property('iss', 'https://security.appcelerator.com');
+	});
+
+	it('should encoding session token for API key and generate Authorization HTTP header', function () {
+		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
+		should(token).be.a.string;
+		var headers = {};
+		lib.generateAPITokenHTTPAuthorization(token, '456', headers);
+		should(headers).have.property('authorization');
+		should(headers.authorization).match(/^APIKey\s(\w+)\s([\w\.=-]+)$/);
 	});
 
 	it('should allow setting various parameters', function () {

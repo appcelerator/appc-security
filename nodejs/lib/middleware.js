@@ -97,7 +97,7 @@ function unauthorized (req, resp, errorHandler, redirectTo, redirectUrlParam, re
 				redirectUrl: url
 			});
 		}
-		resp.status(401).send('Unauthorized').end();
+		resp.status(401).send('Unauthorized');
 	}
 }
 
@@ -107,15 +107,18 @@ function unauthorized (req, resp, errorHandler, redirectTo, redirectUrlParam, re
 function Middleware(options) {
 	options = options || {};
 
-	var header = options.header || 'apikey',
+	var header = options.header || 'authorization',
 		urlpattern = options.urlpattern,
 		errorHandler = options.errorHandler,
 		redirectTo = options.redirect,
 		redirectUrlParam = options.redirectUrlParam || 'redirect',
 		secret = options.secret,
-		encoding = options.encoding || 'base64',
+		encoding = options.encoding || 'utf8',
 		renderUnauthorized = options.renderUnauthorized,
-		successHandler = options.successHandler;
+		successHandler = options.successHandler,
+		required = options.required === undefined ? true : options.required,
+		useSession = options.useSession,
+		sessionKey = useSession && (options.sessionKey || header);
 
 	if (!secret) {
 		throw new SecurityError('missing required options "secret"');
@@ -127,18 +130,24 @@ function Middleware(options) {
 	return function middleware (req, resp, next) {
 		if (!urlpattern || urlpattern.test(req.url)) {
 			var value = req.headers && req.headers[header];
-			if (!value) {
+			if (!value && required) {
 				return unauthorized(req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, 'unauthorized', new Error('missing ' + header + ' header'));
-			} else {
+			} else if (value) {
 				try {
-					var encoded = seclib.verifySessionTokenForAPIKey(value, secret, encoding);
+					var encoded = seclib.validateAPITokenFromHTTPAuthorization(secret, value, encoding);
 					req[header] = encoded;
+					if (useSession && req.session) {
+						req.session[sessionKey] = useSession;
+					}
 					if (successHandler) {
-						return successHandler(req, resp, encoded);
+						return successHandler(req, resp, next, encoded);
 					}
 				}
 				catch (E) {
-					return unauthorized(req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, E.message, E);
+					if (required) {
+						// console.log(E.stack);
+						return unauthorized(req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, E.message, E);
+					}
 				}
 			}
 		}
