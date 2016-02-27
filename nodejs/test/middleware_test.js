@@ -278,14 +278,14 @@ describe('middleware', function () {
 		app.use(middleware);
 		app.get('/success', function (req, resp) {
 			if (req.headers && req.headers.referer) {
-				if (req.headers.referer === 'http://127.0.0.1:9999/success?redirect=http%3A%2F%2F127.0.0.1%3A9999%2Fsecure%2Ffoo') {
+				if (req.headers.referer === 'http://127.0.0.1:9999/secure/foo') {
 					return resp.send('OK');
 				}
 			}
-			resp.send('NOT OK');
+			resp.send('NOT OK (1)');
 		});
 		app.get('/secure/foo', function (req, resp) {
-			resp.send('NOT OK');
+			resp.send('NOT OK (2)');
 		});
 		var opts = {
 			url: 'http://127.0.0.1:9999/secure/foo',
@@ -340,14 +340,14 @@ describe('middleware', function () {
 		app.use(middleware);
 		app.get('/success', function (req, resp) {
 			if (req.headers && req.headers.referer) {
-				if (req.headers.referer === 'http://127.0.0.1:9999/success?_url=http%3A%2F%2F127.0.0.1%3A9999%2Fsecure%2Ffoo') {
+				if (req.headers.referer === 'http://127.0.0.1:9999/secure/foo') {
 					return resp.send('OK');
 				}
 			}
-			resp.send('NOT OK');
+			resp.send('NOT OK (1)');
 		});
 		app.get('/secure/foo', function (req, resp) {
-			resp.send('NOT OK');
+			resp.send('NOT OK (2)');
 		});
 		var opts = {
 			url: 'http://127.0.0.1:9999/secure/foo',

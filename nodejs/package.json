@@ -1,6 +1,6 @@
 {
   "name": "appc-security",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,6 @@
     "time-grunt": "^1.0.0"
   },
   "dependencies": {
-    "jsonwebtoken": "^5.0.5"
+    "jsonwebtoken": "^5.7.0"
   }
 }

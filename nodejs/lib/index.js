@@ -255,7 +255,7 @@ function createSessionTokenFromAPIKey (apikey, key_secret, master_secret, expiry
 		},
 		secret = crypto.pbkdf2Sync(apikey, sha1(apikey + key_secret + master_secret), 100, 16).toString('base64'),
 		options = {
-			expiresInSeconds: expiry / 1000,
+			expiresIn: String(expiry),
 			issuer: 'https://security.appcelerator.com',
 			algorithm: 'HS256',
 			subject: 'apikey'
