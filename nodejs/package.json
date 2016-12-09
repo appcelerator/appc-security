@@ -1,11 +1,10 @@
 {
   "name": "appc-security",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Appcelerator Security Best Practices Library for Node",
   "main": "index.js",
   "scripts": {
-    "test": "grunt",
-    "preinstall": "[ -e ./node_modules/ensure-latest/index.js ] && node ./node_modules/ensure-latest || echo"
+    "test": "grunt"
   },
   "repository": {
     "type": "git",
