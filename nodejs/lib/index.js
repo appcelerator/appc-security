@@ -96,7 +96,7 @@ function encrypt (plainText, key, pepper, hmac_key, encoding, size) {
 			// create a salt + pepper hash which hashes our salt with a known pepper
 			saltAndPepper = sha1(salt + pepper),
 			// use the password to create a derived key used for encrypting
-			derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH / keySizeFactor),
+			derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH / keySizeFactor, 'SHA1'),
 			// create our cipher
 			cipher = crypto.createCipheriv('AES-' + size + '-CBC', derivedKey, iv);
 
@@ -209,7 +209,7 @@ function decrypt (encrypted, key, pepper, hmac_key, encoding, size) {
 		}
 
 		// create our derived key
-		var derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH / keySizeFactor),
+		var derivedKey = crypto.pbkdf2Sync(key, saltAndPepper, ITERATIONS, KEY_LENGTH / keySizeFactor, 'SHA1'),
 			ivKey = new Buffer(iv, 'hex'),
 			// create our decryption cipher
 			cipher = crypto.createDecipheriv('AES-' + size + '-CBC', derivedKey, ivKey);
@@ -253,7 +253,7 @@ function createSessionTokenFromAPIKey (apikey, key_secret, master_secret, expiry
 			apikey: apikey,
 			headers: metadata
 		},
-		secret = crypto.pbkdf2Sync(apikey, sha1(apikey + key_secret + master_secret), 100, 16).toString('base64'),
+		secret = crypto.pbkdf2Sync(apikey, sha1(apikey + key_secret + master_secret), 100, 16, 'SHA1').toString('base64'),
 		options = {
 			expiresIn: String(expiry),
 			issuer: 'https://security.appcelerator.com',
@@ -278,7 +278,7 @@ function verifySessionTokenForAPIKey (token, master_secret, encoding) {
 		var jwt = require('jsonwebtoken'),
 			buf = new Buffer(token, encoding || 'utf8').toString(),
 			decoded = jwt.decode(buf, {complete: true}),
-			secret = crypto.pbkdf2Sync(decoded.payload.apikey, sha1(decoded.payload.apikey + decoded.payload.headers.$ks + master_secret), 100, 16).toString('base64');
+			secret = crypto.pbkdf2Sync(decoded.payload.apikey, sha1(decoded.payload.apikey + decoded.payload.headers.$ks + master_secret), 100, 16, 'SHA1').toString('base64');
 		return jwt.verify(buf, secret, {algorithm: 'HS256', issuer: 'https://security.appcelerator.com'});
 	}
 	catch (e) {
