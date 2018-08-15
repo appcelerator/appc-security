@@ -12,8 +12,8 @@ The following APIs are available:
 
 - `AppC_hmac256(key,data)`: HMAC-256 using key data
 - `AppC_sha1(data)`: SHA1 data
-- `AppC_decrypt(value,key,pepper,hmacKey,encoding,size)`: decrypt an previously encrypted blob
-- `AppC_decryptWithKey(value,derivedKey,pepper,hmacKey,encoding,size)`: decrypt an previously encrypted blob using precalculated derived key
+- `AppC_decrypt(value,key,pepper,hmacKey,encoding,size)`: decrypt a previously encrypted blob
+- `AppC_decryptWithKey(value,derivedKey,pepper,hmacKey,encoding,size)`: decrypt a previously encrypted blob using a precalculated derived key
 
 ### Example Decryption
 
@@ -28,7 +28,7 @@ NSString *encoding = @"base64";
 NSString *result = AppC_decrypt(value,key,pepper,hmacKey,encoding,128);
 ```
 
-The above example with decrypt the encrypted blob and return the result `ABC` if decryption was successful or `nil` if not.
+The above example will decrypt the encrypted blob and return the result `ABC` if decryption was successful or `nil` if not.
 
 ### Building the Library
 
