@@ -1,7 +1,22 @@
-language: objective-c
 sudo: false
-before_script:
-- cd nodejs ; npm install; cd ..
-script:
-- cd ios; ./build.sh; cd ..
-- cd nodejs; grunt; cd ..
+matrix:
+  include:
+    - language: objective-c
+      before_script:
+        - cd ios
+      script:
+        - ./build.sh
+    - language: node_js
+      node_js:
+        - "4"
+        - "6"
+        - "8"
+      cache:
+        directories:
+          - "node_modules"
+      before_script:
+        - cd nodejs
+        - npm install
+      script:
+        - npm run lint
+        - npm test

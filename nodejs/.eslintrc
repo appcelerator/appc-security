@@ -1,0 +1,7 @@
+{
+	"extends": [ "axway/env-node", "axway/+mocha" ],
+	"globals": {},
+	"rules": {
+		"valid-jsdoc": "off"
+	}
+}
