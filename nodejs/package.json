@@ -1,10 +1,11 @@
 {
   "name": "appc-security",
-  "version": "0.0.15",
-  "description": "Appcelerator Security Best Practices Library for Node",
+  "version": "0.1.0",
+  "description": "Appcelerator Security Library for Node.JS",
   "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "lint": "eslint --ext .js lib",
+    "test": "eslint --ext .js test && mocha"
   },
   "repository": {
     "type": "git",
@@ -20,22 +21,20 @@
     "url": "https://github.com/appcelerator/appc-security/issues"
   },
   "homepage": "https://github.com/appcelerator/appc-security",
-  "devDependencies": {
-    "express": "^4.13.3",
-    "grunt": "^0.4.5",
-    "grunt-appc-coverage": "^0.1.5",
-    "grunt-appc-js": "*",
-    "grunt-bump": "^0.3.0",
-    "grunt-cli": "^0.1.13",
-    "grunt-kahvesi": "*",
-    "grunt-mocha-test": "^0.12.7",
-    "load-grunt-tasks": "^1.0.0",
-    "mocha": "^2.1.0",
-    "request": "^2.61.0",
-    "should": "^4.6.1",
-    "time-grunt": "^1.0.0"
-  },
   "dependencies": {
-    "jsonwebtoken": "^5.7.0"
+    "jsonwebtoken": "^8.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-axway": "^3.0.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "request": "^2.88.0",
+    "should": "^13.2.3"
+  },
+  "engines": {
+    "npm": ">=3.3.10",
+    "node": ">=6.14.0"
   }
 }

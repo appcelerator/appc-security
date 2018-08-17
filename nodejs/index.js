@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This code is closed source and Confidential and Proprietary to
  * Appcelerator, Inc. All Rights Reserved.  This code MUST not be

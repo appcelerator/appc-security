@@ -1,5 +1,6 @@
-var should = require('should'), // jshint ignore:line
-	lib = require('../');
+const should = require('should');
+
+const lib = require('..');
 
 describe('library', function () {
 
@@ -8,7 +9,7 @@ describe('library', function () {
 	});
 
 	it('should support generateLargeRandomValue with default size', function () {
-		var value = lib.generateLargeRandomValue();
+		let value = lib.generateLargeRandomValue();
 		value.should.be.string;
 		value.should.be.length(512);
 		// should be lowercase hex
@@ -16,21 +17,22 @@ describe('library', function () {
 	});
 
 	it('should support generateLargeRandomValue with different size', function () {
-		var value = lib.generateLargeRandomValue(10);
+		let value = lib.generateLargeRandomValue(10);
 		value.should.be.string;
 		value.should.be.length(20);
 	});
 
 	it('should support generateLargeRandomValue with different encoding', function () {
-		var value = lib.generateLargeRandomValue(10, 'base64');
+		let value = lib.generateLargeRandomValue(10, 'base64');
 		value.should.be.string;
-		var buf = new Buffer(value, 'base64');
+		// eslint-disable-next-line security/detect-new-buffer
+		let buf = new Buffer(value, 'base64');
 		should(value).match(/=$/);
 		should(value.toString('base64')).equal(value);
 	});
 
 	it('should encrypt to base64', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey, 'base64');
@@ -41,65 +43,65 @@ describe('library', function () {
 		should(result).have.property('iv');
 		should(result).have.property('derivedKey');
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64');
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64');
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should encrypt', function () {
-		var key = 'key',
+		let key = 'key',
 			pepper = 'pepper',
 			hmacKey = 'hmacKey',
 			result = lib.encrypt('ABC', key, pepper, hmacKey, 'base64');
 		should(result).be.object;
 		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64');
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64');
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should encrypt using AES128', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey, 'base64', 128);
 		should(result).be.object;
 		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 128);
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 128);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should encrypt using AES192', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey, 'base64', 192);
 		should(result).be.object;
 		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 192);
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 192);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should encrypt using AES256', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey, 'base64', 256);
 		should(result).be.object;
 		should(result.value).match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 256);
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey, 'base64', 256);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should fail to encrypt using invalid size', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue();
 		(function () {
@@ -111,7 +113,7 @@ describe('library', function () {
 	});
 
 	it('should not fail to encrypt with short key', function () {
-		var key = '123',
+		let key = '123',
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue();
 		(function () {
@@ -120,7 +122,7 @@ describe('library', function () {
 	});
 
 	it('should not fail to encrypt with short pepper', function () {
-		var key = '123',
+		let key = '123',
 			pepper = '123',
 			hmacKey = lib.generateLargeRandomValue();
 		(function () {
@@ -129,7 +131,7 @@ describe('library', function () {
 	});
 
 	it('should not fail to encrypt with short hmac', function () {
-		var key = '123',
+		let key = '123',
 			pepper = '123',
 			hmacKey = '123';
 		(function () {
@@ -138,34 +140,34 @@ describe('library', function () {
 	});
 
 	it('should encrypt to hex as default', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
 		should(result).be.object;
 		should(result.value).not.match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey);
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey);
 		should(result2).be.string;
 		should(result2).equal('ABC');
 	});
 
 	it('should encrypt json string', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
-			json = JSON.stringify({user:'foo', org:'bar'}),
+			json = JSON.stringify({ user: 'foo', org: 'bar' }),
 			result = lib.encrypt(json, key, pepper, hmacKey);
 		should(result).be.object;
 		should(result.value).not.match(/=$/);
 
-		var result2 = lib.decrypt(result.value, key, pepper, hmacKey);
+		let result2 = lib.decrypt(result.value, key, pepper, hmacKey);
 		should(result2).be.string;
 		should(result2).equal(json);
 	});
 
 	it('should encrypt fail with invalid encoding', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue();
 		(function () {
@@ -174,7 +176,7 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with invalid encrypted blob', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
@@ -185,7 +187,7 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with wrong key', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
@@ -196,7 +198,7 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with wrong pepper', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
@@ -207,7 +209,7 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with wrong hmac', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
@@ -218,7 +220,7 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with wrong encryption', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
@@ -229,12 +231,12 @@ describe('library', function () {
 	});
 
 	it('should fail to decrypt with modified hmac', function () {
-		var key = lib.generateLargeRandomValue(),
+		let key = lib.generateLargeRandomValue(),
 			pepper = lib.generateLargeRandomValue(),
 			hmacKey = lib.generateLargeRandomValue(),
 			result = lib.encrypt('ABC', key, pepper, hmacKey);
 		should(result).be.object;
-		var hmac = result.value.substring(0, lib.HMAC_LENGTH),
+		let hmac = result.value.substring(0, lib.HMAC_LENGTH),
 			remainder = result.value.substring(lib.HMAC_LENGTH);
 		(function () {
 			result = hmac.substring(0, hmac.length - 2) + remainder;
@@ -247,9 +249,9 @@ describe('library', function () {
 	});
 
 	it('should support encoding session token for API key', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, {foo:'bar'});
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, { foo: 'bar' });
 		should(token).be.a.string;
-		var result = lib.verifySessionTokenForAPIKey(token, '456');
+		let result = lib.verifySessionTokenForAPIKey(token, '456');
 		should(result).be.an.object;
 		should(result).have.property('apikey', '123');
 		should(result).have.property('iss', 'https://security.appcelerator.com');
@@ -262,7 +264,7 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with invalid secret', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, {foo:'bar'});
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 10000, { foo: 'bar' });
 		should(token).be.a.string;
 		(function () {
 			lib.verifySessionTokenForAPIKey(token, '123');
@@ -270,7 +272,7 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with expired token', function (done) {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, { foo: 'bar' });
 		should(token).be.a.string;
 		setTimeout(function () {
 			(function () {
@@ -281,13 +283,12 @@ describe('library', function () {
 	});
 
 	it('should fail encoding session token for API key with expired token and expiredAt property', function (done) {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, { foo: 'bar' });
 		should(token).be.a.string;
 		setTimeout(function () {
 			try {
 				lib.verifySessionTokenForAPIKey(token, '456');
-			}
-			catch (E) {
+			} catch (E) {
 				should(E).have.property('expiredAt');
 				should(E.expiredAt).be.a.Date;
 				E.expiredAt.getTime().should.be.approximately(Math.floor((Date.now() + 1000)), 5000);
@@ -297,26 +298,27 @@ describe('library', function () {
 	});
 
 	it('should encoding session token for API key with utf8 encoding', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'}, 'utf8');
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, { foo: 'bar' }, 'utf8');
 		should(token).be.a.string;
-		var encoded = lib.verifySessionTokenForAPIKey(token, '456', 'utf8');
+		let encoded = lib.verifySessionTokenForAPIKey(token, '456', 'utf8');
 		should(encoded).be.an.object;
 		should(encoded).have.property('apikey', '123');
 		should(encoded).have.property('iss', 'https://security.appcelerator.com');
 	});
 
 	it('should encoding session token for API key and generate Authorization HTTP header', function () {
-		var token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, {foo:'bar'});
+		let token = lib.createSessionTokenFromAPIKey('123', '0', '456', 1000, { foo: 'bar' });
 		should(token).be.a.string;
-		var headers = {};
+		let headers = {};
 		lib.generateAPITokenHTTPAuthorization(token, '456', headers);
 		should(headers).have.property('authorization');
+		// eslint-disable-next-line no-useless-escape
 		should(headers.authorization).match(/^APIKey\s(\w+)\s([\w\.=-]+)$/);
 	});
 
 	it('should allow setting various parameters', function () {
-		['HMAC_LENGTH', 'ITERATIONS', 'SALT_LENGTH', 'IV_LENGTH', 'KEY_LENGTH', 'DEBUG'].forEach(function (k) {
-			var value = lib[k];
+		[ 'HMAC_LENGTH', 'ITERATIONS', 'SALT_LENGTH', 'IV_LENGTH', 'KEY_LENGTH', 'DEBUG' ].forEach(function (k) {
+			let value = lib[k];
 			lib[k] = value;
 			should(lib[k]).be.equal(value);
 		});

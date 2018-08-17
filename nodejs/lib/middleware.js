@@ -1,11 +1,11 @@
-var seclib = require('./index'),
-	urllib = require('url'),
-	SecurityError = require('./error');
+const urllib = require('url');
+const seclib = require('./index');
+const SecurityError = require('./error');
 
 /**
  * return the accepts mimetype
  */
-function accepts (req) {
+function accepts(req) {
 	var header = req.headers && req.headers.accept;
 	if (header) {
 		var token = header.split(',');
@@ -31,15 +31,15 @@ function accepts (req) {
 /**
  * returns true if this is SSL request
  */
-function isSecure (req) {
-	return req.secure ||
-		req.headers && req.headers.host && req.headers.host.indexOf('https://') === 0;
+function isSecure(req) {
+	return req.secure
+		|| req.headers && req.headers.host && req.headers.host.indexOf('https://') === 0;
 }
 
 /**
  * return a full relative url
  */
-function makeRelativeUrl (req, relpath) {
+function makeRelativeUrl(req, relpath) {
 	var url = (isSecure(req) ? 'https' : 'http') + '://' + req.get('host') + req.originalUrl;
 	return urllib.resolve(url, relpath);
 }
@@ -47,7 +47,7 @@ function makeRelativeUrl (req, relpath) {
 /**
  * get the redirect url
  */
-function redirectUrl (req, resp, redirectTo, redirectUrlParam) {
+function redirectUrl(req, resp, redirectTo, redirectUrlParam) {
 	// we want to redirect to a specified url
 	var fullUrl = encodeURIComponent(makeRelativeUrl(req, req.url));
 	var q = redirectTo.indexOf('?') > 0;
@@ -61,14 +61,14 @@ function redirectUrl (req, resp, redirectTo, redirectUrlParam) {
 /**
  * perform a redirect
  */
-function redirect (req, resp, redirectTo, redirectUrlParam) {
+function redirect(req, resp, redirectTo, redirectUrlParam) {
 	resp.redirect(redirectUrl(req, resp, redirectTo, redirectUrlParam));
 }
 
 /**
  * handle unauthorized
  */
-function unauthorized (req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, reason, error) {
+function unauthorized(req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, reason, error) {
 	if (errorHandler) {
 		// custom error handling
 		return errorHandler(req, resp, reason, error);
@@ -127,7 +127,7 @@ function Middleware(options) {
 	/**
 	 * the middleware code itself
 	 */
-	return function middleware (req, resp, next) {
+	return function middleware(req, resp, next) {
 		if (!urlpattern || urlpattern.test(req.url)) {
 			var value = req.headers && req.headers[header];
 			if (!value && required) {
@@ -142,8 +142,7 @@ function Middleware(options) {
 					if (successHandler) {
 						return successHandler(req, resp, next, encoded);
 					}
-				}
-				catch (E) {
+				} catch (E) {
 					if (required) {
 						// console.log(E.stack);
 						return unauthorized(req, resp, errorHandler, redirectTo, redirectUrlParam, renderUnauthorized, E.message, E);

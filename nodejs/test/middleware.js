@@ -1,11 +1,12 @@
-var should = require('should'), // jshint ignore:line
-	lib = require('../'),
-	express = require('express'),
-	request = require('request'),
-	app,
-	server;
+const should = require('should');
+const express = require('express');
+const request = require('request');
 
-// jscs:disable jsDoc
+const lib = require('..');
+
+let app;
+let server;
+
 describe('middleware', function () {
 
 	beforeEach(function (done) {
@@ -14,23 +15,24 @@ describe('middleware', function () {
 	});
 
 	afterEach(function (done) {
-		if (server) {
-			server.close(done);
-		} else {
-			done();
+		if (!server) {
+			return done();
 		}
+		server.close(done);
 	});
 
 	it('should require a secret value', function () {
 		(function () {
-			var middleware = new lib.Middleware();
+			// eslint-disable-next-line no-unused-vars
+			let middleware = new lib.Middleware();
 		}).should.throw('missing required options "secret"');
 	});
 
 	it('should reject without key as HTML', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
+		// eslint-disable-next-line no-unused-expressions
 		should(middleware).be.a.function;
 		app.get('/', middleware);
 		request.get('http://127.0.0.1:9999/', function (err, resp, body) {
@@ -41,12 +43,13 @@ describe('middleware', function () {
 	});
 
 	it('should reject without key as HTML with accept header', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
+		// eslint-disable-next-line no-unused-expressions
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
@@ -60,13 +63,14 @@ describe('middleware', function () {
 	});
 
 	it('should reject without key with custom render', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			renderUnauthorized: 'unauth'
 		});
+		// eslint-disable-next-line no-unused-expressions
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
@@ -87,12 +91,12 @@ describe('middleware', function () {
 	});
 
 	it('should reject without key as JSON with accept header', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'application/json'
@@ -101,22 +105,22 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':401,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject without key as JSON with XHR header', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				'X-Requested-With': 'XMLHttpRequest'
@@ -125,22 +129,22 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':401,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject without key as JSON with accept header as primary', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'application/json, text/html'
@@ -149,22 +153,22 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':401,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject without key as JSON with accept header as secondary', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/yaml, application/json'
@@ -173,22 +177,22 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':401,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject without key as JSON with accept header as secondary and with precendence', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/yaml;q=0.3, application/json;q=0.1'
@@ -197,17 +201,17 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':401,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject with custom error handler', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			errorHandler: function (req, resp, reason, error) {
 				resp.json({
@@ -220,7 +224,7 @@ describe('middleware', function () {
 		});
 		should(middleware).be.a.function;
 		app.get('/', middleware);
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/yaml, application/json'
@@ -229,17 +233,17 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.eql(JSON.stringify({
-				'success':false,
-				'code':402,
-				'message':'unauthorized',
-				'error':'missing authorization header'
+				success: false,
+				code: 402,
+				message: 'unauthorized',
+				error: 'missing authorization header'
 			}));
 			done();
 		});
 	});
 
 	it('should reject with custom url pattern', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			urlpattern: /^\/secure\/.*/
 		});
@@ -251,7 +255,7 @@ describe('middleware', function () {
 		app.get('/secure/foo', function (req, resp) {
 			resp.send('NOT OK');
 		});
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
@@ -260,7 +264,7 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK');
-			opts.url = 'http://127.0.0.1:9999/secure/foo',
+			opts.url = 'http://127.0.0.1:9999/secure/foo';
 			request.get(opts, function (err, resp, body) {
 				should(body).be.equal('Unauthorized');
 				done();
@@ -269,7 +273,7 @@ describe('middleware', function () {
 	});
 
 	it('should reject with custom redirect url', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			urlpattern: /^\/secure\/.*/,
 			redirect: 'http://127.0.0.1:9999/success'
@@ -287,7 +291,7 @@ describe('middleware', function () {
 		app.get('/secure/foo', function (req, resp) {
 			resp.send('NOT OK (2)');
 		});
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/secure/foo',
 			headers: {
 				accept: 'text/html'
@@ -301,7 +305,7 @@ describe('middleware', function () {
 	});
 
 	it('should reject with custom redirect url as json', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			redirect: 'http://127.0.0.1:9999/failed'
 		});
@@ -310,7 +314,7 @@ describe('middleware', function () {
 		app.get('/', function (req, resp) {
 			resp.send('NOT OK');
 		});
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/json'
@@ -319,18 +323,18 @@ describe('middleware', function () {
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal(JSON.stringify({
-				success:false,
-				code:401,
-				message:'unauthorized',
-				error:'missing authorization header',
-				url:'http://127.0.0.1:9999/failed?redirect=http%3A%2F%2F127.0.0.1%3A9999%2F'
+				success: false,
+				code: 401,
+				message: 'unauthorized',
+				error: 'missing authorization header',
+				url: 'http://127.0.0.1:9999/failed?redirect=http%3A%2F%2F127.0.0.1%3A9999%2F'
 			}));
 			done();
 		});
 	});
 
 	it('should reject with custom redirect url with custom param', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			urlpattern: /^\/secure\/.*/,
 			redirect: 'http://127.0.0.1:9999/success',
@@ -349,7 +353,7 @@ describe('middleware', function () {
 		app.get('/secure/foo', function (req, resp) {
 			resp.send('NOT OK (2)');
 		});
-		var opts = {
+		let opts = {
 			url: 'http://127.0.0.1:9999/secure/foo',
 			headers: {
 				accept: 'text/html'
@@ -363,7 +367,7 @@ describe('middleware', function () {
 	});
 
 	it('should do basic apikey with defaults', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret'
 		});
 		should(middleware).be.a.function;
@@ -374,14 +378,14 @@ describe('middleware', function () {
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'});
-		var opts = {
+		let token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, { foo: 'bar' });
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
 			}
 		};
-		lib.generateAPITokenHTTPAuthorization (token, 'secret', opts.headers);
+		lib.generateAPITokenHTTPAuthorization(token, 'secret', opts.headers);
 		request.get(opts, function (err, resp, body) {
 			should(err).not.be.ok;
 			should(body).be.equal('OK');
@@ -390,7 +394,7 @@ describe('middleware', function () {
 	});
 
 	it('should do basic apikey with custom header', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			header: '_apikey'
 		});
@@ -402,8 +406,8 @@ describe('middleware', function () {
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'});
-		var opts = {
+		let token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, { foo: 'bar' });
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
@@ -418,7 +422,7 @@ describe('middleware', function () {
 	});
 
 	it('should do basic apikey with custom encoding', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			encoding: 'utf8'
 		});
@@ -430,8 +434,8 @@ describe('middleware', function () {
 			}
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'}, 'utf8');
-		var opts = {
+		let token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, { foo: 'bar' }, 'utf8');
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
@@ -446,7 +450,7 @@ describe('middleware', function () {
 	});
 
 	it('should do basic apikey with custom success handler', function (done) {
-		var middleware = new lib.Middleware({
+		let middleware = new lib.Middleware({
 			secret: 'secret',
 			encoding: 'utf8',
 			successHandler: function (req, resp, next, encoded) {
@@ -458,8 +462,8 @@ describe('middleware', function () {
 		app.get('/', function (req, resp) {
 			resp.send('NOT OK');
 		});
-		var token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, {foo:'bar'}, 'utf8');
-		var opts = {
+		let token = lib.createSessionTokenFromAPIKey('123', 'test', 'secret', 5000, { foo: 'bar' }, 'utf8');
+		let opts = {
 			url: 'http://127.0.0.1:9999/',
 			headers: {
 				accept: 'text/html'
