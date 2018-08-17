@@ -8,9 +8,9 @@ matrix:
         - ./build.sh
     - language: node_js
       node_js:
-        - "4"
         - "6"
         - "8"
+        - "node"
       cache:
         directories:
           - "node_modules"
