@@ -4,8 +4,7 @@
   "description": "Appcelerator Security Library for Node.JS",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js lib",
-    "test": "eslint --ext .js test && mocha"
+    "test": "eslint --ext .js ./ && mocha"
   },
   "repository": {
     "type": "git",
