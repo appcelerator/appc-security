@@ -1,3 +1,4 @@
 .DS_Store
 android/bin
 android/.idea
+ios/boost_*

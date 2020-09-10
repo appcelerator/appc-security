@@ -8,7 +8,6 @@ random()
 CONFIG="Release"
 LIB="appcsecurity"
 FINALNAME="appcsecurity"
-XCTOOL=`which xctool`
 SEED=`random`
 APPC_OBFUSCATE_SEED="y`random`"
 APPC_OBFUSCATE_SYMBOLS=1
@@ -38,15 +37,21 @@ defines=(
 	APPC_SYMBOL_DECRYPTWITHKEY=$APPC_SYMBOL_DECRYPTWITHKEY
 )
 
-if [ ! -f $XCTOOL ]; then
-	echo "Install XCTool for Automated Unit Testing"
-	echo "See https://github.com/facebook/xctool for instructions"
-else
-	xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB}Tests GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")" SYMROOT=./build
-	xctool -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} run-tests -reporter pretty SYMROOT=./build
-	if [ $? -ne 0 ]; then
-		exit $?
+if [ ! -d boost_1_74_0 ]; then
+	echo -e "Boost 1.74.0 not found"
+	if [[ ! -f "boost_1_74_0.tar.gz" ]]; then
+		echo -e "Downloading Boost 1.74.0..."
+		curl -L -O https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.gz
 	fi
+	echo -e "Extracting Boost 1.74.0..."
+	tar xf boost_1_74_0.tar.gz
+fi
+
+
+xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB}Tests EXCLUDED_ARCHS=arm64 GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")" SYMROOT=./build
+xcodebuild test -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} SYMROOT=./build -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.6'
+if [ $? -ne 0 ]; then
+	exit $?
 fi
 
 if [ -d build ]; then
@@ -57,10 +62,14 @@ fi
 xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} clean
 xcodebuild -sdk iphoneos -configuration ${CONFIG} -scheme ${LIB} clean
 
-xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB} GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")"
+xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB} EXCLUDED_ARCHS=arm64 GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")"
 xcodebuild -sdk iphoneos -configuration ${CONFIG} -target ${LIB} GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")"
 
 lipo build/${CONFIG}-iphonesimulator/lib${LIB}.a build/${CONFIG}-iphoneos/lib${LIB}.a -create -output build/lib${LIB}.a
+
+if [ $? -ne 0 ]; then
+	exit $?
+fi
 
 for arch in armv7 arm64 i386 x86_64; do
 	xcrun -sdk iphoneos lipo build/lib${LIB}.a -verify_arch $arch
