@@ -49,7 +49,7 @@ fi
 
 
 xcodebuild -sdk iphonesimulator -configuration ${CONFIG} -target ${LIB}Tests EXCLUDED_ARCHS=arm64 GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")" SYMROOT=./build
-xcodebuild test -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} SYMROOT=./build -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.3'
+xcodebuild test -sdk iphonesimulator -configuration ${CONFIG} -scheme ${LIB} SYMROOT=./build -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.6'
 if [ $? -ne 0 ]; then
 	exit $?
 fi
