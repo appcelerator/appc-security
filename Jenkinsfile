@@ -24,9 +24,11 @@ def buildNodeJS () {
 		node('(osx || linux)') {
 			checkout scm
 			dir('nodejs') {
-				ensureNPM()
-				sh 'npm ci'
-				sh 'npm run test'
+				nodejs(nodeJSInstallationName: "node 12.18.0") {
+					ensureNPM()
+					sh 'npm ci'
+					sh 'npm run test'
+				}
 			}
 		}
 	}
