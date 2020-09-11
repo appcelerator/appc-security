@@ -11,8 +11,8 @@ def buildIOS() {
 			checkout scm
 			dir('ios') {
 				sh './build.sh'
-				dir('build') {
-					archiveArtifacts 'libappcsecurity.a'
+				dir('build/appcsecurity-universal') {
+					archiveArtifacts 'appcsecurity.xcframework'
 				}
 			}
 		}
