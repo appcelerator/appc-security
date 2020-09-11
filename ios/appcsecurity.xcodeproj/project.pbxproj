@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		241076D81A776A7500469AAF /* appcsecurity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 241076D71A776A7500469AAF /* appcsecurity.mm */; };
 		241076D91A776A7500469AAF /* appcsecurity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 241076D71A776A7500469AAF /* appcsecurity.mm */; };
-		2470DD981A75764E00552643 /* appcsecurity.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2470DD971A75764E00552643 /* appcsecurity.h */; };
 		2470DDA01A75764E00552643 /* libappcsecurity.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2470DD941A75764D00552643 /* libappcsecurity.a */; };
 		2470DDAF1A757AA600552643 /* EncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2470DDAE1A757AA600552643 /* EncryptionTest.m */; };
+		C4054961250BA88600F42AD0 /* appcsecurity.h in Headers */ = {isa = PBXBuildFile; fileRef = 2470DD971A75764E00552643 /* appcsecurity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,19 +23,6 @@
 			remoteInfo = appcsecurity;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		2470DD921A75764D00552643 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				2470DD981A75764E00552643 /* appcsecurity.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		241076D71A776A7500469AAF /* appcsecurity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = appcsecurity.mm; sourceTree = "<group>"; };
@@ -113,14 +100,25 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		C4054960250BA88100F42AD0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4054961250BA88600F42AD0 /* appcsecurity.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		2470DD931A75764D00552643 /* appcsecurity */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2470DDA81A75764E00552643 /* Build configuration list for PBXNativeTarget "appcsecurity" */;
 			buildPhases = (
+				C4054960250BA88100F42AD0 /* Headers */,
 				2470DD901A75764D00552643 /* Sources */,
 				2470DD911A75764D00552643 /* Frameworks */,
-				2470DD921A75764D00552643 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -171,6 +169,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 2470DD8B1A75764D00552643;
