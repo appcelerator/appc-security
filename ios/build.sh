@@ -16,6 +16,11 @@ APPC_SYMBOL_SHA1="x`random`"
 APPC_SYMBOL_DECRYPT="z`random`"
 APPC_SYMBOL_DECRYPTWITHKEY="a`random`"
 
+
+IOS_SIMULATOR_TYPE="iPhone 11 Pro Max"
+# Obtain a simulator version for the required simulator
+IOS_SIMULATOR_VERSION=$(instruments -s devices | grep "${IOS_SIMULATOR_TYPE}" -m 1 | grep -E -o '([0-9]+\.[0-9]+)')
+
 BUILD_DIR=build
 UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${LIB}-universal
 
@@ -64,7 +69,7 @@ xcodebuild test \
 -configuration ${CONFIG} \
 -scheme ${LIB} \
 SYMROOT=./build \
--destination 'platform=iOS Simulator,name=iPhone 8,OS=13.6'
+-destination "platform=iOS Simulator,name=${IOS_SIMULATOR_TYPE},OS=${IOS_SIMULATOR_VERSION}"
 
 if [ $? -ne 0 ]; then
 	exit $?
