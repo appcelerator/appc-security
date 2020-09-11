@@ -12,7 +12,7 @@ def buildIOS() {
 			dir('ios') {
 				sh './build.sh'
 				dir('build/appcsecurity-universal') {
-					archiveArtifacts 'appcsecurity.xcframework'
+					archiveArtifacts 'appcsecurity.xcframework/'
 				}
 			}
 		}
