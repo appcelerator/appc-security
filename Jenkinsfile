@@ -7,7 +7,7 @@ def buildAndroid(androidNDKLevel) {
 
 def buildIOS() {
 	return {
-		node('osx && xcode') {
+		node('osx && xcode-12') {
 			checkout scm
 			dir('ios') {
 				sh './build.sh'
